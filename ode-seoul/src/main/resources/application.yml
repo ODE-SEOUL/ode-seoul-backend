@@ -1,0 +1,65 @@
+server:
+  address: 0.0.0.0
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+  tomcat:
+    max-http-form-post-size: -1
+    max-swallow-size: -1
+
+spring:
+  datasource:
+    url: jdbc:mysql://${ODE_SEOUL_DB_HOSTNAME}:${ODE_SEOUL_DB_PORT}/${ODE_SEOUL_DB_SCHEMA}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${ODE_SEOUL_DB_USERNAME}
+    password: ${ODE_SEOUL_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    database: mysql
+  security:
+    user:
+      name: ${ODE_SEOUL_SECURITY_USERNAME}
+      password: ${ODE_SEOUL_SECURITY_PASSWORD}
+      roles: ADMIN
+  servlet:
+    multipart:
+      max-file-size: 1500MB
+      max-request-size: 2GB
+
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    path: /swagger-ui
+    display-request-duration: true
+    disable-swagger-default-url: false
+    operations-sorter: alpha
+    tags-sorter: alpha
+    persist-authorization: true
+  cache:
+    disabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - beans
+          - env
+          - health
+          - httptrace
+          - mappings
+          - metrics
+          - prometheus
+          - threaddump
+  endpoint:
+    health:
+      show-details: always
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

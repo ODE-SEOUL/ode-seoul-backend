@@ -1,5 +1,6 @@
 package kr.njw.odeseoul.auth.application;
 
+import jakarta.transaction.Transactional;
 import kr.njw.odeseoul.auth.application.dto.AbstractLoginRequest;
 import kr.njw.odeseoul.auth.application.dto.LoginResponse;
 import kr.njw.odeseoul.common.dto.BaseResponseStatus;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j

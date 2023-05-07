@@ -1,19 +1,19 @@
 buildscript {
     ext {
         queryDslVersion = '5.0.0'
+        jjwtVersion = '0.11.5'
     }
 }
 
 plugins {
     id 'java'
     id 'jacoco'
-    id 'org.springframework.boot' version '2.7.11'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+    id 'org.springframework.boot' version '3.0.6'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group = 'kr.njw'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '17'
 
 configurations {
@@ -35,17 +35,20 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
     implementation 'me.paulschwarz:spring-dotenv:3.0.0'
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
@@ -63,25 +66,18 @@ tasks.named('jar') {
     enabled = false
 }
 
-querydsl {
-    jpa = true
-    querydslSourcesDir = "${buildDir}/generated/querydsl"
-}
+def querydslDir = "$buildDir/generated/querydsl"
 
 sourceSets {
-    main {
-        java {
-            srcDir "${buildDir}/generated/querydsl"
-        }
-    }
+    main.java.srcDirs += [querydslDir]
 }
 
-configurations {
-    querydsl.extendsFrom compileClasspath
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
 }
 
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl
+clean.doLast {
+    file(querydslDir).deleteDir()
 }
 
 jacoco {

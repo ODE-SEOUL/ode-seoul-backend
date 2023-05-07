@@ -29,11 +29,10 @@ public class SpringSecurityConfig {
     @Order(1)
     public SecurityFilterChain adminSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .requestMatchers()
-                .antMatchers("/v3/api-docs*/**", "/swagger-ui*/**", "/actuator/**");
+                .securityMatcher("/v3/api-docs*/**", "/swagger-ui*/**", "/actuator/**");
 
         httpSecurity
-                .authorizeRequests()
+                .authorizeHttpRequests()
                 .anyRequest().hasRole(Role.ADMIN.getValue());
 
         httpSecurity
@@ -53,8 +52,8 @@ public class SpringSecurityConfig {
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
+                .authorizeHttpRequests()
+                .requestMatchers("/auth/**").permitAll()
                 .anyRequest().hasRole(Role.USER.getValue());
 
         httpSecurity
@@ -76,7 +75,7 @@ public class SpringSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/h2-console/**", "/actuator/health/**");
+        return (web) -> web.ignoring().requestMatchers("/h2-console/**", "/actuator/health/**");
     }
 
     @Bean

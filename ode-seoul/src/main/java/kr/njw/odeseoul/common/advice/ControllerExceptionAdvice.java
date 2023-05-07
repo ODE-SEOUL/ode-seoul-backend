@@ -1,5 +1,7 @@
 package kr.njw.odeseoul.common.advice;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import kr.njw.odeseoul.common.dto.BaseResponse;
 import kr.njw.odeseoul.common.dto.BaseResponseStatus;
 import kr.njw.odeseoul.common.exception.BaseException;
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
 

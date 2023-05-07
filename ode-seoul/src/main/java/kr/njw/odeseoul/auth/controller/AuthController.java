@@ -1,5 +1,7 @@
 package kr.njw.odeseoul.auth.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import kr.njw.odeseoul.auth.application.LoginService;
 import kr.njw.odeseoul.auth.application.dto.KakaoLoginRequest;
 import kr.njw.odeseoul.auth.application.dto.LoginResponse;
@@ -13,9 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController

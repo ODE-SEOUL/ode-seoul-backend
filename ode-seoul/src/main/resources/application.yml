@@ -63,3 +63,10 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+ode-seoul:
+  security:
+    jwt-secret: ${ODE_SEOUL_JWT_SECRET}
+    access-token-duration-seconds: 3600
+  kakao:
+    client-id: ${ODE_SEOUL_KAKAO_CLIENT_ID}

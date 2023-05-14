@@ -1,6 +1,7 @@
 package kr.njw.odeseoul.common.security;
 
 public enum Role {
+    GUEST("GUEST"),
     USER("USER"),
     ADMIN("ADMIN");
 

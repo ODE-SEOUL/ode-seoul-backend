@@ -11,7 +11,20 @@ public enum BaseResponseStatus {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 401, "인증에 실패했습니다."),
     FORBIDDEN(HttpStatus.FORBIDDEN, 403, "권한이 없습니다."),
     NOT_FOUND(HttpStatus.NOT_FOUND, 404, "대상을 찾을 수 없습니다."),
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "서버 에러가 발생했습니다.");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "서버 오류가 발생했습니다."),
+
+    // auth (10xxx)
+    LOGIN_ERROR(HttpStatus.UNAUTHORIZED, 10000, "로그인에 실패했습니다."),
+    SIGNUP_ERROR_BAD_USER(HttpStatus.UNAUTHORIZED, 10100, "계정 정보가 올바르지 않습니다."),
+    SIGNUP_ERROR_BAD_LOCATION(HttpStatus.BAD_REQUEST, 10101, "지역 정보가 올바르지 않습니다."),
+    RENEW_TOKEN_ERROR_BAD_USER(HttpStatus.UNAUTHORIZED, 10200, "계정 정보가 올바르지 않습니다."),
+
+    // user (11xxx)
+    FIND_USER_ERROR_NOT_FOUND_USER(HttpStatus.NOT_FOUND, 11000, "회원을 찾을 수 없습니다."),
+
+    // etc (99xxx)
+    MAX_UPLOAD_SIZE_EXCEEDED_ERROR(HttpStatus.BAD_REQUEST, 99000, "파일 용량이 초과되었습니다."),
+    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 99999, "알 수 없는 오류입니다.");
 
     @JsonIgnore
     private final HttpStatus httpStatus;

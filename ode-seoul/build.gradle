@@ -2,6 +2,7 @@ buildscript {
     ext {
         queryDslVersion = '5.0.0'
         jjwtVersion = '0.11.5'
+        geotoolsVersion = '29.0'
     }
 }
 
@@ -23,6 +24,8 @@ configurations {
 }
 
 repositories {
+    maven { url 'https://repo.osgeo.org/repository/release/' }
+    maven { url 'https://jitpack.io' }
     mavenCentral()
 }
 
@@ -33,11 +36,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.hibernate.orm:hibernate-spatial:6.1.7.Final'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
     implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    implementation "org.geotools:gt-main:${geotoolsVersion}"
+    implementation "org.geotools:gt-epsg-hsql:${geotoolsVersion}"
+    implementation 'com.github.imagekit-developer:imagekit-java:2.0.1'
+    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'me.paulschwarz:spring-dotenv:3.0.0'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -64,20 +73,6 @@ tasks.named('bootJar') {
 
 tasks.named('jar') {
     enabled = false
-}
-
-def querydslDir = "$buildDir/generated/querydsl"
-
-sourceSets {
-    main.java.srcDirs += [querydslDir]
-}
-
-tasks.withType(JavaCompile) {
-    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
-}
-
-clean.doLast {
-    file(querydslDir).deleteDir()
 }
 
 jacoco {

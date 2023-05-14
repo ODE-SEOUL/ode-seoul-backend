@@ -25,8 +25,8 @@ spring:
       roles: ADMIN
   servlet:
     multipart:
-      max-file-size: 1500MB
-      max-request-size: 2GB
+      max-file-size: 10MB
+      max-request-size: 20MB
 
 springdoc:
   default-consumes-media-type: application/json
@@ -67,3 +67,7 @@ ode-seoul:
     access-token-duration-seconds: 3600
   kakao:
     client-id: ${ODE_SEOUL_KAKAO_CLIENT_ID}
+  image-kit:
+    url-endpoint: ${ODE_SEOUL_IMAGE_KIT_URL_ENDPOINT}
+    public-key: ${ODE_SEOUL_IMAGE_KIT_PUBLIC_KEY}
+    private-key: ${ODE_SEOUL_IMAGE_KIT_PRIVATE_KEY}

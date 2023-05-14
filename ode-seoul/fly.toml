@@ -11,4 +11,15 @@ auto_stop_machines = false
 auto_start_machines = false
 
 [env]
+JAVA_OPTS = "-Xms576m -Xmx576m"
 TZ = "Asia/Seoul"
+
+[checks]
+  [checks.http_check]
+    grace_period = "45s"
+    interval = "30s"
+    method = "get"
+    path = "/courses"
+    port = 8080
+    timeout = "30s"
+    type = "http"

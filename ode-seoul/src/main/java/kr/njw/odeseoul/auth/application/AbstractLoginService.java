@@ -1,24 +1,25 @@
 package kr.njw.odeseoul.auth.application;
 
-import jakarta.transaction.Transactional;
 import kr.njw.odeseoul.auth.application.dto.AbstractLoginRequest;
 import kr.njw.odeseoul.auth.application.dto.LoginResponse;
 import kr.njw.odeseoul.common.dto.BaseResponseStatus;
 import kr.njw.odeseoul.common.exception.BaseException;
 import kr.njw.odeseoul.common.security.JwtAuthenticationProvider;
-import kr.njw.odeseoul.common.security.Role;
+import kr.njw.odeseoul.user.entity.User;
+import kr.njw.odeseoul.user.repository.UserRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 public abstract class AbstractLoginService<T extends AbstractLoginRequest> implements LoginService<T> {
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
+    private final UserRepository userRepository;
 
     protected abstract AuthenticationResult authenticate(T request);
 
@@ -29,15 +30,32 @@ public abstract class AbstractLoginService<T extends AbstractLoginRequest> imple
             authenticationResult = this.authenticate(request);
         } catch (Exception e) {
             log.error("[Login Error]", e);
-            throw new BaseException(BaseResponseStatus.UNAUTHORIZED);
+            throw new BaseException(BaseResponseStatus.LOGIN_ERROR);
         }
 
+        User user = this.userRepository.findByLoginIdAndDeletedAtIsNull(authenticationResult.getId()).orElse(null);
+
+        if (user == null) {
+            user = User.builder()
+                    .nickname(authenticationResult.getSocialProfile().getNickname())
+                    .profileImage(authenticationResult.getSocialProfile().getProfileImage())
+                    .loginId(authenticationResult.getId())
+                    .loginPw("")
+                    .refreshToken("")
+                    .signupStatus(User.UserSignupStatus.BEFORE_REGISTERED)
+                    .build();
+        }
+
+        user.renewRefreshToken();
+        this.userRepository.saveAndFlush(user);
+
         LoginResponse response = new LoginResponse();
-        response.setId(authenticationResult.getId()); // TODO: 서비스 자체 ID로 변경
+        response.setId(user.getId());
         response.getSocialProfile().setNickname(authenticationResult.getSocialProfile().getNickname());
-        response.setAccessToken(this.jwtAuthenticationProvider.createToken(response.getId(), List.of(Role.USER)));
-        response.setRefreshToken(RandomStringUtils.randomAlphanumeric(32)); // TODO: 리프레시 토큰 발급 구현
-        response.setStatus(LoginResponse.LoginStatus.BEFORE_REGISTERED); // TODO: 가입 로직 구현
+        response.getSocialProfile().setProfileImage(authenticationResult.getSocialProfile().getProfileImage());
+        response.setAccessToken(this.jwtAuthenticationProvider.createToken(String.valueOf(response.getId()), List.of(user.getRole())));
+        response.setRefreshToken(user.getRefreshToken());
+        response.setSignupStatus(user.getSignupStatus());
         return response;
     }
 
@@ -49,6 +67,7 @@ public abstract class AbstractLoginService<T extends AbstractLoginRequest> imple
         @Data
         public static class SocialProfile {
             private String nickname;
+            private String profileImage;
         }
     }
 }

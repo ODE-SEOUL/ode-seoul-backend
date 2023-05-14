@@ -2,6 +2,7 @@ package kr.njw.odeseoul.auth.application;
 
 import kr.njw.odeseoul.auth.application.dto.KakaoLoginRequest;
 import kr.njw.odeseoul.common.security.JwtAuthenticationProvider;
+import kr.njw.odeseoul.user.repository.UserRepository;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,14 +35,16 @@ public class KakaoLoginService extends AbstractLoginService<KakaoLoginRequest> {
     private final RestTemplate restTemplate;
     private final String clientId;
 
-    public KakaoLoginService(JwtAuthenticationProvider jwtAuthenticationProvider, RestTemplate restTemplate,
+    public KakaoLoginService(JwtAuthenticationProvider jwtAuthenticationProvider,
+                             UserRepository userRepository,
+                             RestTemplate restTemplate,
                              @Value("${ode-seoul.kakao.client-id}") String clientId) {
-        super(jwtAuthenticationProvider);
+        super(jwtAuthenticationProvider, userRepository);
         this.restTemplate = restTemplate;
         this.clientId = clientId;
     }
 
-    public AuthenticationResult authenticate(KakaoLoginRequest request) {
+    protected AuthenticationResult authenticate(KakaoLoginRequest request) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(CONTENT_TYPE, KAKAO_AUTH_API_REQUEST_CONTENT_TYPE);
 
@@ -61,12 +64,15 @@ public class KakaoLoginService extends AbstractLoginService<KakaoLoginRequest> {
         );
 
         GetProfileApiResponse profile = this.getProfile(Objects.requireNonNull(responseEntity.getBody()).getAccess_token());
+
         long oauthId = Objects.requireNonNull(profile.getId());
         String nickname = profile.getKakao_account().getProfile().getNickname();
+        String profileImageUrl = profile.getKakao_account().getProfile().getProfile_image_url();
 
         AuthenticationResult authenticationResult = new AuthenticationResult();
         authenticationResult.setId(KAKAO_ID_PREFIX + oauthId);
         authenticationResult.getSocialProfile().setNickname(StringUtils.trimToEmpty(nickname));
+        authenticationResult.getSocialProfile().setProfileImage(StringUtils.trimToEmpty(profileImageUrl));
         return authenticationResult;
     }
 
@@ -104,6 +110,7 @@ public class KakaoLoginService extends AbstractLoginService<KakaoLoginRequest> {
             @Data
             public static class Profile {
                 private String nickname;
+                private String profile_image_url;
             }
         }
     }

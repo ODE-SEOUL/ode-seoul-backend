@@ -72,7 +72,7 @@ public class CourseController {
     }
 
     @SecurityRequirement(name = "accessToken")
-    @Operation(summary = "리뷰 작성")
+    @Operation(summary = "리뷰 작성", description = "제약사항: 유저는 하나의 코스에 한 개의 리뷰만 작성할 수 있음")
     @ApiResponses({
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400", description = """

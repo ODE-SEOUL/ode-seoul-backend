@@ -82,8 +82,8 @@ public class AuthController {
                                     schema = @Schema(example = "ode_seoul_refresh_token=Lwj8TE5Lr97EnRRQYbyP1Zu4h4tBht4i; Path=/; HttpOnly")
                             )
                     }),
-            @ApiResponse(responseCode = "401", description = "계정 정보가 올바르지 않습니다. (code: 10100)", content = @Content()),
-            @ApiResponse(responseCode = "400", description = "지역 정보가 올바르지 않습니다. (code: 10101)", content = @Content())
+            @ApiResponse(responseCode = "400", description = "지역 정보가 올바르지 않습니다. (code: 10101)", content = @Content()),
+            @ApiResponse(responseCode = "401", description = "계정 상태가 올바르지 않습니다. (code: 10100)", content = @Content())
     })
     @PostMapping("/accounts/signup")
     public ResponseEntity<BaseResponse<SignupResponse>> signup(HttpServletResponse httpServletResponse,
@@ -117,7 +117,7 @@ public class AuthController {
                                     schema = @Schema(example = "ode_seoul_refresh_token=Lwj8TE5Lr97EnRRQYbyP1Zu4h4tBht4i; Path=/; HttpOnly")
                             )
                     }),
-            @ApiResponse(responseCode = "401", description = "계정 정보가 올바르지 않습니다. (code: 10200)", content = @Content())
+            @ApiResponse(responseCode = "401", description = "리프레시 토큰이 올바르지 않습니다. (code: 10200)", content = @Content())
     })
     @PatchMapping("/accounts/token")
     public ResponseEntity<BaseResponse<RenewTokenResponse>> renewAccessToken(HttpServletRequest httpServletRequest,

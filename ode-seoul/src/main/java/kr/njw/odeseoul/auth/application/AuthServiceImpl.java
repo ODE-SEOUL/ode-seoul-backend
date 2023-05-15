@@ -24,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
         User user = this.userRepository.findByRefreshTokenAndDeletedAtIsNull(request.getRefreshToken()).orElse(null);
 
         if (user == null) {
-            throw new BaseException(BaseResponseStatus.RENEW_TOKEN_ERROR_BAD_USER);
+            throw new BaseException(BaseResponseStatus.RENEW_TOKEN_ERROR_BAD_REFRESH_TOKEN);
         }
 
         user.renewRefreshToken();

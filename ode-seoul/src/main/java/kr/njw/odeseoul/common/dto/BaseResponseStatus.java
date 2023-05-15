@@ -15,9 +15,9 @@ public enum BaseResponseStatus {
 
     // auth (10xxx)
     LOGIN_ERROR(HttpStatus.UNAUTHORIZED, 10000, "로그인에 실패했습니다."),
-    SIGNUP_ERROR_BAD_USER(HttpStatus.UNAUTHORIZED, 10100, "계정 정보가 올바르지 않습니다."),
+    SIGNUP_ERROR_BAD_USER(HttpStatus.UNAUTHORIZED, 10100, "계정 상태가 올바르지 않습니다."),
     SIGNUP_ERROR_BAD_LOCATION(HttpStatus.BAD_REQUEST, 10101, "지역 정보가 올바르지 않습니다."),
-    RENEW_TOKEN_ERROR_BAD_USER(HttpStatus.UNAUTHORIZED, 10200, "계정 정보가 올바르지 않습니다."),
+    RENEW_TOKEN_ERROR_BAD_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, 10200, "리프레시 토큰이 올바르지 않습니다."),
 
     // user (11xxx)
     FIND_USER_ERROR_NOT_FOUND_USER(HttpStatus.NOT_FOUND, 11000, "회원을 찾을 수 없습니다."),

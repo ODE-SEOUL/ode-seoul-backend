@@ -24,7 +24,7 @@ public class UserController {
     @Operation(summary = "회원 정보", description = "비로그인 상태에서도 볼 수 있는 공개된 회원 정보 조회 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "404", description = "회원을 찾을 수 없습니다. (code: 11000)", content = @Content())
+            @ApiResponse(responseCode = "404", description = "유저를 찾을 수 없습니다. (code: 11000)", content = @Content())
     })
     @GetMapping("/{id}")
     public ResponseEntity<BaseResponse<FindUserResponse>> findUser(

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import kr.njw.odeseoul.common.dto.BaseResponse;
 import kr.njw.odeseoul.image.application.ImageService;
 import kr.njw.odeseoul.image.application.dto.UploadImageResponse;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageController {
     private final ImageService imageService;
 
+    @SecurityRequirement(name = "accessToken")
     @Operation(summary = "이미지 업로드", description = """
             이미지 업로드가 필요한 모든 상황에서 사용하는 API (개발 과정 or 실서비스 내에서 자유롭게 사용 가능)
 

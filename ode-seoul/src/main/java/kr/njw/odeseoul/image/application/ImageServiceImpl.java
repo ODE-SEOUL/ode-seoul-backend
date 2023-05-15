@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
@@ -34,8 +35,19 @@ public class ImageServiceImpl implements ImageService {
 
         Result imageKitResult = this.imageKit.upload(fileCreateRequest);
 
+        List<Map<String, String>> transformation = new ArrayList<>();
+        Map<String, String> imageKitScale = new LinkedHashMap<>();
+        imageKitScale.put("width", "720");
+        imageKitScale.put("height", "720");
+        imageKitScale.put("crop", "at_max");
+        transformation.add(imageKitScale);
+
+        Map<String, Object> imageKitUrlOptions = new HashMap<>();
+        imageKitUrlOptions.put("path", imageKitResult.getFilePath());
+        imageKitUrlOptions.put("transformation", transformation);
+
         UploadImageResponse response = new UploadImageResponse();
-        response.setUrl(imageKitResult.getUrl());
+        response.setUrl(this.imageKit.getUrl(imageKitUrlOptions));
         return response;
     }
 }

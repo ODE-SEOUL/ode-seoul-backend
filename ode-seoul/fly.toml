@@ -1,5 +1,5 @@
 app = "ode-seoul"
-primary_region = "nrt"
+primary_region = "sin"
 
 [build]
 image = "njw1204/ode-seoul:latest"
@@ -15,11 +15,11 @@ JAVA_OPTS = "-Xms576m -Xmx576m"
 TZ = "Asia/Seoul"
 
 [checks]
-  [checks.http_check]
-    grace_period = "45s"
-    interval = "30s"
-    method = "get"
-    path = "/courses"
-    port = 8080
-    timeout = "30s"
-    type = "http"
+[checks.http_check]
+grace_period = "45s"
+interval = "30s"
+method = "get"
+path = "/courses"
+port = 8080
+timeout = "30s"
+type = "http"

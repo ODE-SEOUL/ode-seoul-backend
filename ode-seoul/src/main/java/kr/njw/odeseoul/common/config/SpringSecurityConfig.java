@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -55,7 +56,7 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/accounts/signup/**").hasRole(Role.GUEST.getValue())
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/courses/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
                 .requestMatchers("/locations/**").permitAll()
                 .requestMatchers("/users/{id}").permitAll()
                 .anyRequest().hasRole(Role.USER.getValue());

@@ -57,8 +57,8 @@ public class SpringSecurityConfig {
                 .requestMatchers("/auth/accounts/signup/**").hasRole(Role.GUEST.getValue())
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
-                .requestMatchers("/locations/**").permitAll()
-                .requestMatchers("/users/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/locations/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/{id}").permitAll()
                 .anyRequest().hasRole(Role.USER.getValue());
 
         httpSecurity

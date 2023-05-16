@@ -37,9 +37,9 @@ public class CourseController {
             요청 처리 시간으로 인해 프론트에서는 최초 1회만 API 호출 후 변수에 저장해서 여러 페이지에서 활용하기를 요망 (추가적인 필터링이나 정렬 작업 등 진행 요망)""")
     @GetMapping("")
     public ResponseEntity<BaseResponse<List<FindCourseResponse>>> findCourses(
-            @Parameter(description = "(optional) 검색 위치 위도 (distanceFromSearchLocation을 받고 싶을 때 포함)", example = "37.65251105")
+            @Parameter(description = "검색 위치 위도 (distanceFromSearchLocation을 받고 싶을 때 포함)", example = "37.65251105")
             @RequestParam(value = "latitude", required = false) Double latitude,
-            @Parameter(description = "(optional) 검색 위치 경도 (distanceFromSearchLocation을 받고 싶을 때 포함)", example = "127.0750347")
+            @Parameter(description = "검색 위치 경도 (distanceFromSearchLocation을 받고 싶을 때 포함)", example = "127.0750347")
             @RequestParam(value = "longitude", required = false) Double longitude
     ) {
         return ResponseEntity.ok(new BaseResponse<>(this.courseProvider.findCourses(

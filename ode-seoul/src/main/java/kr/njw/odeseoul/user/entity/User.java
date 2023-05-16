@@ -73,6 +73,20 @@ public class User {
         this.signupStatus = UserSignupStatus.REGISTERED;
     }
 
+    public void editBasicProfile(String nickname, String profileImage) {
+        if (nickname != null) {
+            this.nickname = StringUtils.trimToEmpty(nickname);
+        }
+
+        if (profileImage != null) {
+            this.profileImage = StringUtils.trimToEmpty(profileImage);
+        }
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public Role getRole() {
         return (this.signupStatus == UserSignupStatus.BEFORE_REGISTERED) ? Role.GUEST : Role.USER;
     }

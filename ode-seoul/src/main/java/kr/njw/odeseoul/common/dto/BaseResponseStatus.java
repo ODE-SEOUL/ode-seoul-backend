@@ -23,6 +23,9 @@ public enum BaseResponseStatus {
     FIND_USER_ERROR_NOT_FOUND_USER(HttpStatus.NOT_FOUND, 11000, "유저를 찾을 수 없습니다."),
     EDIT_PROFILE_ERROR_BAD_USER(HttpStatus.BAD_REQUEST, 11100, "잘못된 유저입니다."),
     EDIT_PROFILE_ERROR_BAD_LOCATION(HttpStatus.BAD_REQUEST, 11101, "지역 정보가 올바르지 않습니다."),
+    EDIT_PICKED_COURSES_ERROR_BAD_USER(HttpStatus.BAD_REQUEST, 11200, "잘못된 유저입니다."),
+    EDIT_PICKED_COURSES_ERROR_BAD_COURSE(HttpStatus.BAD_REQUEST, 11201, "잘못된 코스입니다."),
+    FIND_PICKED_COURSES_ERROR_BAD_USER(HttpStatus.BAD_REQUEST, 11300, "잘못된 유저입니다."),
 
     // course (12xxx)
     WRITE_COURSE_REVIEW_ERROR_NOT_FOUND_COURSE(HttpStatus.BAD_REQUEST, 12000, "코스가 존재하지 않습니다."),

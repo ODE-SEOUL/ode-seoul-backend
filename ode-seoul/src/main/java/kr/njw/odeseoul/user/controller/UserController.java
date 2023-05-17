@@ -8,16 +8,22 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import kr.njw.odeseoul.common.dto.BaseResponse;
+import kr.njw.odeseoul.common.dto.BaseResponseStatus;
+import kr.njw.odeseoul.common.exception.BaseException;
 import kr.njw.odeseoul.user.application.UserProvider;
 import kr.njw.odeseoul.user.application.UserService;
+import kr.njw.odeseoul.user.application.dto.EditPickedCoursesRequest;
 import kr.njw.odeseoul.user.application.dto.EditProfileRequest;
+import kr.njw.odeseoul.user.application.dto.FindPickedCourseResponse;
 import kr.njw.odeseoul.user.application.dto.FindUserResponse;
+import kr.njw.odeseoul.user.controller.dto.EditPickedCoursesRestRequest;
 import kr.njw.odeseoul.user.controller.dto.EditProfileRestRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -59,6 +65,53 @@ public class UserController {
         request.setLocationCode(restRequest.getLocationCode());
 
         this.userService.editProfile(request);
+
+        return ResponseEntity.ok(new BaseResponse<>(true));
+    }
+
+    @SecurityRequirement(name = "accessToken")
+    @Operation(summary = "내가 찜한 코스 목록", description = """
+            가장 최근에 찜한 순서대로 정렬되어 반환
+
+            코스의 상세한 정보는 코스 목록 API 활용 요망""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = """
+                    잘못된 유저입니다. (code: 11300)""", content = @Content())
+    })
+    @GetMapping("/me/picked-courses")
+    public ResponseEntity<BaseResponse<List<FindPickedCourseResponse>>> findPickedCourses(Principal principal) {
+        return ResponseEntity.ok(new BaseResponse<>(this.userProvider.findPickedCourses(Long.valueOf(principal.getName()))));
+    }
+
+    @SecurityRequirement(name = "accessToken")
+    @Operation(summary = "코스 찜 등록/해제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = """
+                    잘못된 유저입니다. (code: 11200)
+
+                    잘못된 코스입니다. (code: 11201)""", content = @Content())
+    })
+    @PatchMapping("/me/picked-courses")
+    public ResponseEntity<BaseResponse<Boolean>> editPickedCourses(Principal principal,
+                                                                   @Valid @RequestBody EditPickedCoursesRestRequest restRequest) {
+        EditPickedCoursesRequest request = new EditPickedCoursesRequest();
+
+        switch (restRequest.getType()) {
+            case "add" -> {
+                request.setEditType(EditPickedCoursesRequest.EditType.ADD);
+            }
+            case "remove" -> {
+                request.setEditType(EditPickedCoursesRequest.EditType.REMOVE);
+            }
+            default -> throw new BaseException(BaseResponseStatus.BAD_REQUEST);
+        }
+
+        request.setUserId(Long.valueOf(principal.getName()));
+        request.setCourseId(restRequest.getCourseId());
+
+        this.userService.editPickedCourses(request);
 
         return ResponseEntity.ok(new BaseResponse<>(true));
     }

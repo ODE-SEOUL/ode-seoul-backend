@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserPickedCourseRepository extends JpaRepository<UserPickedCourse, Long> {
-    Optional<UserPickedCourse> findByUserIdAndCourseIdAndDeletedAtIsNull(Long userId, Long courseId);
+    Optional<UserPickedCourse> findFirstByUserIdAndCourseIdAndDeletedAtIsNull(Long userId, Long courseId);
 
     @EntityGraph(attributePaths = {"course"}, type = EntityGraph.EntityGraphType.LOAD)
     List<UserPickedCourse> findAllByUserIdAndDeletedAtIsNullOrderByIdDesc(Long userId);

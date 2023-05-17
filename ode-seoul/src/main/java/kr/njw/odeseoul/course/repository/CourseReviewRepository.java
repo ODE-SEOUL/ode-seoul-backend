@@ -15,5 +15,5 @@ public interface CourseReviewRepository extends JpaRepository<CourseReview, Long
     List<CourseReview> findAllByUserIdAndDeletedAtIsNullOrderByIdDesc(Long userId);
 
     @EntityGraph(attributePaths = {"course", "user"}, type = EntityGraph.EntityGraphType.LOAD)
-    Optional<CourseReview> findByCourseIdAndUserIdAndDeletedAtIsNull(Long courseId, Long userId);
+    Optional<CourseReview> findFirstByCourseIdAndUserIdAndDeletedAtIsNull(Long courseId, Long userId);
 }

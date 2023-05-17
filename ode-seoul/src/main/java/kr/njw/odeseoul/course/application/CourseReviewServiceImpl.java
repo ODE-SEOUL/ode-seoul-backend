@@ -35,7 +35,7 @@ public class CourseReviewServiceImpl implements CourseReviewService {
             throw new BaseException(BaseResponseStatus.WRITE_COURSE_REVIEW_ERROR_NOT_FOUND_USER);
         }
 
-        if (this.courseReviewRepository.findByCourseIdAndUserIdAndDeletedAtIsNull(request.getCourseId(), request.getUserId()).isPresent()) {
+        if (this.courseReviewRepository.findFirstByCourseIdAndUserIdAndDeletedAtIsNull(request.getCourseId(), request.getUserId()).isPresent()) {
             // TODO: 짧은 시간 내 요청시 중복 작성 방지
             throw new BaseException(BaseResponseStatus.WRITE_COURSE_REVIEW_ERROR_ALREADY_WRITTEN);
         }

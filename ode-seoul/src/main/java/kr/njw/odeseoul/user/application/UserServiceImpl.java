@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     public void editPickedCourses(EditPickedCoursesRequest request) {
         User user = this.userRepository.findByIdAndDeletedAtIsNull(request.getUserId()).orElse(null);
         Course course = this.courseRepository.findByIdAndDeletedAtIsNull(request.getCourseId()).orElse(null);
-        UserPickedCourse userPickedCourse = this.userPickedCourseRepository.findByUserIdAndCourseIdAndDeletedAtIsNull(
+        UserPickedCourse userPickedCourse = this.userPickedCourseRepository.findFirstByUserIdAndCourseIdAndDeletedAtIsNull(
                 request.getUserId(), request.getCourseId()).orElse(null);
 
         if (user == null) {

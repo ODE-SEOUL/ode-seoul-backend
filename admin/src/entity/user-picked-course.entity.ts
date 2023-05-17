@@ -1,44 +1,31 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CommonEntity } from './common/common.entity';
 import { User } from './user.entity';
 import { Course } from './course.entity';
 
-@Entity({ name: 'course_review' })
-export class CourseReview extends CommonEntity {
+@Entity({ name: 'user_picked_course' })
+export class UserPickedCourse extends CommonEntity {
   @PrimaryGeneratedColumn()
   public id: number;
-
-  @ManyToOne((type) => Course, {
-    eager: true,
-  })
-  public course: Course;
 
   @ManyToOne((type) => User, {
     eager: true,
   })
   public user: User;
 
-  @Column({ type: 'int' })
-  public score: number;
-
-  @Column({ type: 'text' })
-  public content: string;
-
-  @Column({ length: 500 })
-  public image: string;
+  @ManyToOne((type) => Course, {
+    eager: true,
+  })
+  public course: Course;
 }
 
-export const validateCourseReview = async (request, context) => {
+export const validateUserPickedCourse = async (request, context) => {
   const { payload } = request;
   const errors: {
     [key: string]: {
       message: string;
     };
   } = {};
-
-  payload.score ??= 0;
-  payload.content ??= '';
-  payload.image ??= '';
 
   if (!payload['user.id']) {
     errors['user.id'] = {

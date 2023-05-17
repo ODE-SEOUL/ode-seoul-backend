@@ -9,6 +9,10 @@ import {
   validateCourseReview,
 } from './entity/course-review.entity';
 import { ConfigModule } from '@nestjs/config';
+import {
+  UserPickedCourse,
+  validateUserPickedCourse,
+} from './entity/user-picked-course.entity';
 
 const authenticate = async (email: string, password: string) => {
   if (
@@ -124,7 +128,7 @@ const createResource = (
       username: process.env.ODE_SEOUL_DB_USERNAME,
       password: process.env.ODE_SEOUL_DB_PASSWORD,
       database: process.env.ODE_SEOUL_DB_SCHEMA,
-      entities: [User, Course, CourseReview, Location],
+      entities: [User, UserPickedCourse, Course, CourseReview, Location],
       synchronize: false,
       ssl: {
         rejectUnauthorized: true,
@@ -159,6 +163,17 @@ const createResource = (
                   isTitle: true,
                 },
               }),
+              createResource(
+                UserPickedCourse,
+                'id',
+                false,
+                validateUserPickedCourse,
+                {
+                  id: {
+                    isTitle: true,
+                  },
+                },
+              ),
               createResource(Course, 'id', false, validateCourse, {
                 name: {
                   isTitle: true,

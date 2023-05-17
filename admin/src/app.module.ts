@@ -13,6 +13,7 @@ import {
   UserPickedCourse,
   validateUserPickedCourse,
 } from './entity/user-picked-course.entity';
+import { Notice, validateNotice } from './entity/notice.entity';
 
 const authenticate = async (email: string, password: string) => {
   if (
@@ -128,7 +129,14 @@ const createResource = (
       username: process.env.ODE_SEOUL_DB_USERNAME,
       password: process.env.ODE_SEOUL_DB_PASSWORD,
       database: process.env.ODE_SEOUL_DB_SCHEMA,
-      entities: [User, UserPickedCourse, Course, CourseReview, Location],
+      entities: [
+        User,
+        UserPickedCourse,
+        Course,
+        CourseReview,
+        Location,
+        Notice,
+      ],
       synchronize: false,
       ssl: {
         rejectUnauthorized: true,
@@ -201,13 +209,21 @@ const createResource = (
                   type: 'textarea',
                 },
               }),
+              createResource(CourseReview, 'id', false, validateCourseReview, {
+                id: {
+                  isTitle: true,
+                },
+                content: {
+                  type: 'textarea',
+                },
+              }),
               createResource(Location, 'code', true, undefined, {
                 code: {
                   isTitle: true,
                 },
               }),
-              createResource(CourseReview, 'id', false, validateCourseReview, {
-                id: {
+              createResource(Notice, 'id', false, validateNotice, {
+                title: {
                   isTitle: true,
                 },
                 content: {

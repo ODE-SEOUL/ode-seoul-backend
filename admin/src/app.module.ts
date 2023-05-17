@@ -15,8 +15,12 @@ const authenticate = async (email: string, password: string) => {
     email === process.env.ODE_SEOUL_ADMIN_USERNAME &&
     password === process.env.ODE_SEOUL_ADMIN_PASSWORD
   ) {
-    return Promise.resolve({ email, password });
+    return Promise.resolve({
+      email: process.env.ODE_SEOUL_ADMIN_USERNAME,
+      password: process.env.ODE_SEOUL_ADMIN_PASSWORD,
+    });
   }
+
   return null;
 };
 
@@ -156,6 +160,9 @@ const createResource = (
                 },
               }),
               createResource(Course, 'id', false, validateCourse, {
+                name: {
+                  isTitle: true,
+                },
                 id: {
                   isVisible: true,
                 },
@@ -172,25 +179,44 @@ const createResource = (
                     { value: 'RELAX', label: '커피 마시면서 여유롭게' },
                   ],
                 },
+                description: {
+                  type: 'textarea',
+                },
+                accessWay: {
+                  type: 'textarea',
+                },
               }),
               createResource(Location, 'code', true, undefined, {
                 code: {
                   isTitle: true,
                 },
               }),
-              createResource(CourseReview, 'id', false, validateCourseReview),
+              createResource(CourseReview, 'id', false, validateCourseReview, {
+                id: {
+                  isTitle: true,
+                },
+                content: {
+                  type: 'textarea',
+                },
+              }),
             ],
           },
-          auth: {
-            authenticate,
-            cookieName: 'ode_seoul_adminjs',
-            cookiePassword: process.env.ODE_SEOUL_ADMIN_SECRET,
-          },
-          sessionOptions: {
-            resave: true,
-            saveUninitialized: true,
-            secret: process.env.ODE_SEOUL_ADMIN_SECRET,
-          },
+          auth:
+            process.env.NODE_ENV === 'development'
+              ? undefined
+              : {
+                  authenticate,
+                  cookieName: 'ode_seoul_adminjs',
+                  cookiePassword: process.env.ODE_SEOUL_ADMIN_SECRET,
+                },
+          sessionOptions:
+            process.env.NODE_ENV === 'development'
+              ? undefined
+              : {
+                  resave: true,
+                  saveUninitialized: true,
+                  secret: process.env.ODE_SEOUL_ADMIN_SECRET,
+                },
         }),
       });
     }),

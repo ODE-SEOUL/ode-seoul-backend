@@ -4,7 +4,7 @@ const Dashboard = () => (
   <div
     style={{
       margin: '36px 18px',
-      fontSize: 24,
+      fontSize: 18,
       textAlign: 'center',
       lineHeight: 1.5,
     }}

@@ -32,6 +32,9 @@ public enum BaseResponseStatus {
     WRITE_COURSE_REVIEW_ERROR_NOT_FOUND_USER(HttpStatus.BAD_REQUEST, 12001, "잘못된 유저입니다."),
     WRITE_COURSE_REVIEW_ERROR_ALREADY_WRITTEN(HttpStatus.BAD_REQUEST, 12002, "이미 리뷰를 작성했습니다."),
 
+    // event (13xxx)
+    SEARCH_EVENTS_ERROR_BAD_GUGUN(HttpStatus.BAD_REQUEST, 13000, "자치구 조건이 올바르지 않습니다."),
+
     // etc (99xxx)
     MAX_UPLOAD_SIZE_EXCEEDED_ERROR(HttpStatus.BAD_REQUEST, 99000, "파일 용량이 초과되었습니다."),
     UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 99999, "알 수 없는 오류입니다.");

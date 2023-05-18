@@ -1,4 +1,4 @@
-package kr.njw.odeseoul.notice.application.dto;
+package kr.njw.odeseoul.event.application.dto;
 
 import kr.njw.odeseoul.common.dto.PageResponse;
 import lombok.Data;
@@ -8,6 +8,6 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FindNoticesResponse extends PageResponse {
-    private List<FindNoticeResponse> notices;
+public class SearchEventsResponse extends PageResponse {
+    private List<FindEventResponse> events;
 }

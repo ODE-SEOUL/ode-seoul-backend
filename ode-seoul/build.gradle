@@ -75,6 +75,20 @@ tasks.named('jar') {
     enabled = false
 }
 
+def generated = 'src/main/generated'
+
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+sourceSets {
+    main.java.srcDirs += [generated]
+}
+
+clean {
+    delete file(generated)
+}
+
 jacoco {
     toolVersion = '0.8.8'
 }

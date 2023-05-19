@@ -28,7 +28,10 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
         List<Event> events = this.jpaQueryFactory
                 .selectFrom(event)
                 .where(this.createSearchCondition(request))
-                .orderBy(new OrderSpecifier<>(Order.ASC, event.id))
+                .orderBy(new OrderSpecifier<?>[]{
+                        new OrderSpecifier<>(Order.DESC, event.registerDate),
+                        new OrderSpecifier<>(Order.DESC, event.id)
+                })
                 .offset(request.getPageable().getOffset())
                 .limit(request.getPageable().getPageSize())
                 .fetch();

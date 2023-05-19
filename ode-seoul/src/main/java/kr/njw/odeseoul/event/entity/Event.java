@@ -53,6 +53,9 @@ public class Event {
     @Column(nullable = false)
     private LocalDate endDate;
 
+    @Column(nullable = false)
+    private LocalDate registerDate;
+
     @CreationTimestamp
     @Column
     private LocalDateTime createdAt;

@@ -15,11 +15,13 @@ import kr.njw.odeseoul.event.application.dto.SearchEventsResponse;
 import kr.njw.odeseoul.event.entity.Event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/events")
@@ -42,20 +44,24 @@ public class EventController {
             @Parameter(description = "카테고리: *다음과 일치*", example = "SHOW")
             @RequestParam(value = "category", required = false)
             Event.EventCategory category,
+
             @Parameter(description = "자치구(행정동코드): *다음과 일치*", example = "1174000000")
             @RequestParam(value = "gugun", required = false)
             String gugunCode,
+
             @Parameter(description = "행사명: *다음 텍스트를 포함*", example = "밴드")
             @RequestParam(value = "title", required = false)
             String titleContains,
+
             @Parameter(description = "페이지 번호")
-            @RequestParam(value = "page", defaultValue = "1")
             @Positive(message = "must be greater than 0")
+            @RequestParam(value = "page", defaultValue = "1")
             Integer pageNumber,
+
             @Parameter(description = "페이징 사이즈 (최대 100)")
-            @RequestParam(value = "size", defaultValue = "20")
             @Min(value = 1, message = "must be greater than or equal to 1")
             @Max(value = 100, message = "must be less than or equal to 100")
+            @RequestParam(value = "size", defaultValue = "20")
             Integer pagingSize
     ) {
         SearchEventsRequest request = new SearchEventsRequest();

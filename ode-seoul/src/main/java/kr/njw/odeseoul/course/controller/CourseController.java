@@ -38,9 +38,12 @@ public class CourseController {
     @GetMapping("")
     public ResponseEntity<BaseResponse<List<FindCourseResponse>>> findCourses(
             @Parameter(description = "검색 위치 위도 (distanceFromSearchLocation을 받고 싶을 때 포함)", example = "37.65251105")
-            @RequestParam(value = "latitude", required = false) Double latitude,
+            @RequestParam(value = "latitude", required = false)
+            Double latitude,
+
             @Parameter(description = "검색 위치 경도 (distanceFromSearchLocation을 받고 싶을 때 포함)", example = "127.0750347")
-            @RequestParam(value = "longitude", required = false) Double longitude
+            @RequestParam(value = "longitude", required = false)
+            Double longitude
     ) {
         return ResponseEntity.ok(new BaseResponse<>(this.courseProvider.findCourses(
                 (latitude != null && longitude != null) ? Pair.of(latitude, longitude) : null)));
@@ -50,9 +53,12 @@ public class CourseController {
     @GetMapping("/reviews")
     public ResponseEntity<BaseResponse<List<FindCourseReviewResponse>>> findCourseReviews(
             @Parameter(description = "검색 조건 (course: 코스 아이디로 검색, user: 유저 아이디로 검색)", example = "course", required = true)
-            @RequestParam(value = "type") String type,
+            @RequestParam(value = "type")
+            String type,
+
             @Parameter(description = "검색 값 (검색 조건이 course이면 코스 아이디, user이면 유저 아이디)", example = "1", required = true)
-            @RequestParam(value = "value") Long value
+            @RequestParam(value = "value")
+            Long value
     ) {
         FindCourseReviewsRequest request = new FindCourseReviewsRequest();
 

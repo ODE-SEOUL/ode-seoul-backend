@@ -10,11 +10,13 @@ import kr.njw.odeseoul.notice.application.NoticeProvider;
 import kr.njw.odeseoul.notice.application.dto.FindNoticesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/notices")
@@ -26,13 +28,14 @@ public class NoticeController {
     @GetMapping("")
     public ResponseEntity<BaseResponse<FindNoticesResponse>> findNotices(
             @Parameter(description = "페이지 번호")
-            @RequestParam(value = "page", defaultValue = "1")
             @Positive(message = "must be greater than 0")
+            @RequestParam(value = "page", defaultValue = "1")
             Integer pageNumber,
+
             @Parameter(description = "페이징 사이즈 (최대 100)")
-            @RequestParam(value = "size", defaultValue = "20")
             @Min(value = 1, message = "must be greater than or equal to 1")
             @Max(value = 100, message = "must be less than or equal to 100")
+            @RequestParam(value = "size", defaultValue = "20")
             Integer pagingSize
     ) {
         return ResponseEntity.ok(new BaseResponse<>(this.noticeProvider.findNotices(pageNumber, pagingSize)));

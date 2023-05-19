@@ -14,6 +14,10 @@ import {
   validateUserPickedCourse,
 } from './entity/user-picked-course.entity';
 import { Notice, validateNotice } from './entity/notice.entity';
+import {
+  createImageKitUploadProvider,
+  imageKitUploadPathFunction,
+} from './upload/imagekit-upload-provider';
 
 const authenticate = async (email: string, password: string) => {
   if (
@@ -35,6 +39,7 @@ const createResource = (
   readOnly: boolean,
   saveValidator?: (request, response) => any,
   properties?: {},
+  features?: any[],
 ) => {
   return {
     resource: entity,
@@ -116,7 +121,25 @@ const createResource = (
         },
       },
     },
+    features,
   };
+};
+
+const createUploadImageFeature = async (componentLoader, key, name) => {
+  const uploadFileFeature = (await import('@adminjs/upload')).default;
+
+  return uploadFileFeature({
+    componentLoader,
+    provider: await createImageKitUploadProvider(),
+    properties: {
+      key,
+      file: name,
+    },
+    uploadPath: imageKitUploadPathFunction,
+    validation: {
+      mimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+    },
+  });
 };
 
 @Module({
@@ -166,11 +189,27 @@ const createResource = (
               component: components.Dashboard,
             },
             resources: [
-              createResource(User, 'id', false, validateUser, {
-                nickname: {
-                  isTitle: true,
+              createResource(
+                User,
+                'id',
+                false,
+                validateUser,
+                {
+                  nickname: {
+                    isTitle: true,
+                  },
+                  profileImage: {
+                    isVisible: false,
+                  },
                 },
-              }),
+                [
+                  await createUploadImageFeature(
+                    componentLoader,
+                    'profileImage',
+                    'Profile Image',
+                  ),
+                ],
+              ),
               createResource(
                 UserPickedCourse,
                 'id',
@@ -182,33 +221,49 @@ const createResource = (
                   },
                 },
               ),
-              createResource(Course, 'id', false, validateCourse, {
-                name: {
-                  isTitle: true,
+              createResource(
+                Course,
+                'id',
+                false,
+                validateCourse,
+                {
+                  name: {
+                    isTitle: true,
+                  },
+                  id: {
+                    isVisible: true,
+                  },
+                  categories: {
+                    type: 'string',
+                    isArray: true,
+                    availableValues: [
+                      { value: 'SCENERY', label: '볼거리가 많은' },
+                      { value: 'DATE', label: '데이트 코스' },
+                      { value: 'NATURE', label: '자연을 즐기는' },
+                      { value: 'RUN', label: '러닝' },
+                      { value: 'WALK', label: '간단한 산책' },
+                      { value: 'CARE', label: '마음을 정리하고 싶을 때' },
+                      { value: 'RELAX', label: '커피 마시면서 여유롭게' },
+                    ],
+                  },
+                  description: {
+                    type: 'textarea',
+                  },
+                  accessWay: {
+                    type: 'textarea',
+                  },
+                  image: {
+                    isVisible: false,
+                  },
                 },
-                id: {
-                  isVisible: true,
-                },
-                categories: {
-                  type: 'string',
-                  isArray: true,
-                  availableValues: [
-                    { value: 'SCENERY', label: '볼거리가 많은' },
-                    { value: 'DATE', label: '데이트 코스' },
-                    { value: 'NATURE', label: '자연을 즐기는' },
-                    { value: 'RUN', label: '러닝' },
-                    { value: 'WALK', label: '간단한 산책' },
-                    { value: 'CARE', label: '마음을 정리하고 싶을 때' },
-                    { value: 'RELAX', label: '커피 마시면서 여유롭게' },
-                  ],
-                },
-                description: {
-                  type: 'textarea',
-                },
-                accessWay: {
-                  type: 'textarea',
-                },
-              }),
+                [
+                  await createUploadImageFeature(
+                    componentLoader,
+                    'image',
+                    'Image',
+                  ),
+                ],
+              ),
               createResource(CourseReview, 'id', false, validateCourseReview, {
                 id: {
                   isTitle: true,

@@ -138,6 +138,7 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
     uploadPath: imageKitUploadPathFunction,
     validation: {
       mimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+      maxSize: 10 * 1024 * 1024,
     },
   });
 };
@@ -260,7 +261,7 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
                   await createUploadImageFeature(
                     componentLoader,
                     'image',
-                    'Image',
+                    'Main Image',
                   ),
                 ],
               ),

@@ -30,7 +30,11 @@ def handler(_event, _context):
     try:
       events += event_info_response["culturalEventInfo"]["row"]
     except:
-      break
+      if event_info_response["RESULT"]["CODE"] == "INFO-200":
+        # 해당하는 데이터가 없습니다.
+        break
+
+      raise RuntimeError(event_info_response)
 
     page_start += paging_size
 

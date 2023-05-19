@@ -48,13 +48,13 @@ def handler(_event, _context):
   with db.cursor() as cursor:
     sql = """
     INSERT INTO event
-      (uuid, codename, guname, title, place, use_target, use_fee, org_link, main_image, start_date, end_date, created_at)
+      (uuid, codename, guname, title, place, use_target, use_fee, org_link, main_image, start_date, end_date, register_date, created_at)
     VALUES
-      (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""".strip()
+      (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""".strip()
     print(sql)
 
     def build_event_row(event):
-      keys = ["CODENAME", "GUNAME", "TITLE", "PLACE", "USE_TRGT", "USE_FEE", "ORG_LINK", "MAIN_IMG", "STRTDATE", "END_DATE"]
+      keys = ["CODENAME", "GUNAME", "TITLE", "PLACE", "USE_TRGT", "USE_FEE", "ORG_LINK", "MAIN_IMG", "STRTDATE", "END_DATE", "RGSTDATE"]
       row = list(map(strip_to_empty, map(lambda x: event.get(x, None), keys)))
       uid = str(uuid.UUID(hashlib.sha256(str(row).encode("utf-8")).hexdigest()[:32]))
       return tuple([uid] + row + [now.isoformat()])

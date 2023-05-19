@@ -18,6 +18,7 @@ import {
   createImageKitUploadProvider,
   imageKitUploadPathFunction,
 } from './upload/imagekit-upload-provider';
+import { Event } from './entity/event.entity';
 
 const authenticate = async (email: string, password: string) => {
   if (
@@ -38,6 +39,10 @@ const createResource = (
   primaryColumnName: string,
   readOnly: boolean,
   saveValidator?: (request, response) => any,
+  sort?: {
+    direction: 'asc' | 'desc';
+    sortBy: string;
+  },
   properties?: {},
   features?: any[],
 ) => {
@@ -96,6 +101,7 @@ const createResource = (
           isAccessible: false,
         },
       },
+      sort,
       properties: {
         ...properties,
         createdAt: {
@@ -159,6 +165,7 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
         Course,
         CourseReview,
         Location,
+        Event,
         Notice,
       ],
       synchronize: false,
@@ -196,6 +203,10 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
                 false,
                 validateUser,
                 {
+                  direction: 'desc',
+                  sortBy: 'id',
+                },
+                {
                   nickname: {
                     isTitle: true,
                   },
@@ -217,6 +228,10 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
                 false,
                 validateUserPickedCourse,
                 {
+                  direction: 'desc',
+                  sortBy: 'id',
+                },
+                {
                   id: {
                     isTitle: true,
                   },
@@ -227,6 +242,10 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
                 'id',
                 false,
                 validateCourse,
+                {
+                  direction: 'asc',
+                  sortBy: 'id',
+                },
                 {
                   name: {
                     isTitle: true,
@@ -265,27 +284,72 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
                   ),
                 ],
               ),
-              createResource(CourseReview, 'id', false, validateCourseReview, {
-                id: {
-                  isTitle: true,
+              createResource(
+                CourseReview,
+                'id',
+                false,
+                validateCourseReview,
+                {
+                  direction: 'desc',
+                  sortBy: 'id',
                 },
-                content: {
-                  type: 'textarea',
+                {
+                  id: {
+                    isTitle: true,
+                  },
+                  content: {
+                    type: 'textarea',
+                  },
                 },
-              }),
-              createResource(Location, 'code', true, undefined, {
-                code: {
-                  isTitle: true,
+              ),
+              createResource(
+                Location,
+                'code',
+                true,
+                undefined,
+                {
+                  direction: 'asc',
+                  sortBy: 'code',
                 },
-              }),
-              createResource(Notice, 'id', false, validateNotice, {
-                title: {
-                  isTitle: true,
+                {
+                  code: {
+                    isTitle: true,
+                  },
                 },
-                content: {
-                  type: 'textarea',
+              ),
+              createResource(
+                Event,
+                'id',
+                true,
+                undefined,
+                {
+                  direction: 'desc',
+                  sortBy: 'registerDate',
                 },
-              }),
+                {
+                  title: {
+                    isTitle: true,
+                  },
+                },
+              ),
+              createResource(
+                Notice,
+                'id',
+                false,
+                validateNotice,
+                {
+                  direction: 'desc',
+                  sortBy: 'id',
+                },
+                {
+                  title: {
+                    isTitle: true,
+                  },
+                  content: {
+                    type: 'textarea',
+                  },
+                },
+              ),
             ],
           },
           auth:

@@ -47,6 +47,12 @@ public class CourseProviderImpl implements CourseProvider {
             try {
                 response.setCategories(this.objectMapper.readValue(course.getCategories(), new TypeReference<>() {
                 }));
+
+                switch (course.getLevel()) {
+                    case 1 -> response.getCategories().add(FindCourseResponse.CATEGORY_LEVEL_BASIC);
+                    case 2 -> response.getCategories().add(FindCourseResponse.CATEGORY_LEVEL_ADVANCED);
+                    case 3 -> response.getCategories().add(FindCourseResponse.CATEGORY_LEVEL_PRO);
+                }
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }

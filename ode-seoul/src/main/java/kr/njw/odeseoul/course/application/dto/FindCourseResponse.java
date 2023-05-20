@@ -10,6 +10,10 @@ import java.util.List;
 
 @Data
 public class FindCourseResponse {
+    public static final String CATEGORY_LEVEL_BASIC = "LEVEL_BASIC";
+    public static final String CATEGORY_LEVEL_ADVANCED = "LEVEL_ADVANCED";
+    public static final String CATEGORY_LEVEL_PRO = "LEVEL_PRO";
+
     @Schema(example = "1")
     private Long id;
     @Schema(example = "강서문화 산책길")
@@ -23,8 +27,8 @@ public class FindCourseResponse {
     @Schema(example = "강서구의 명소들을 차례로 들르며 걷게 되는 코스 가장 먼저 서울 유일의 향교인 양천향교를 지난다.")
     private String description;
     @ArraySchema(
-            arraySchema = @Schema(description = "카테고리 (SCENERY, DATE, NATURE, RUN, WALK, CARE, RELAX)",
-                    example = "[\"SCENERY\", \"DATE\", \"NATURE\", \"RUN\", \"WALK\", \"CARE\", \"RELAX\"]", nullable = true),
+            arraySchema = @Schema(description = "카테고리 (SCENERY, DATE, NATURE, RUN, WALK, CARE, RELAX, LEVEL_BASIC, LEVEL_ADVANCED, LEVEL_PRO)",
+                    example = "[\"SCENERY\", \"DATE\", \"NATURE\", \"RUN\", \"WALK\", \"CARE\", \"RELAX\", \"LEVEL_BASIC\", \"LEVEL_ADVANCED\", \"LEVEL_PRO\"]", nullable = true),
             minItems = 0,
             maxItems = Integer.MAX_VALUE
     )

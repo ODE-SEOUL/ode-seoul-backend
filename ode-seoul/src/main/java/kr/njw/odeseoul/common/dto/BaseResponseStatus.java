@@ -35,6 +35,10 @@ public enum BaseResponseStatus {
     // event (13xxx)
     SEARCH_EVENTS_ERROR_BAD_GUGUN(HttpStatus.BAD_REQUEST, 13000, "자치구 조건이 올바르지 않습니다."),
 
+    // recruit (14xxx)
+    CREATE_RECRUIT_ERROR_NOT_FOUND_COURSE(HttpStatus.BAD_REQUEST, 14000, "코스가 존재하지 않습니다."),
+    CREATE_RECRUIT_ERROR_NOT_FOUND_HOST(HttpStatus.BAD_REQUEST, 14001, "잘못된 유저입니다."),
+
     // etc (99xxx)
     MAX_UPLOAD_SIZE_EXCEEDED_ERROR(HttpStatus.BAD_REQUEST, 99000, "파일 용량이 초과되었습니다."),
     UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 99999, "알 수 없는 오류입니다.");

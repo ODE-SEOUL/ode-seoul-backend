@@ -14,6 +14,6 @@ public class FindUserResponse {
     private String profileImage;
     @Schema(description = "사는 곳 (서울시 자치구 행정동코드)", example = "1135000000", nullable = true)
     private String locationCode;
-    @Schema(description = "회원가입 상태")
+    @Schema(description = "회원가입 상태", example = "REGISTERED")
     private User.UserSignupStatus signupStatus;
 }

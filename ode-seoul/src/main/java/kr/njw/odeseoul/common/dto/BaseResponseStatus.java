@@ -38,6 +38,7 @@ public enum BaseResponseStatus {
     // recruit (14xxx)
     CREATE_RECRUIT_ERROR_NOT_FOUND_COURSE(HttpStatus.BAD_REQUEST, 14000, "코스가 존재하지 않습니다."),
     CREATE_RECRUIT_ERROR_NOT_FOUND_HOST(HttpStatus.BAD_REQUEST, 14001, "잘못된 유저입니다."),
+    FIND_RECRUIT_ERROR_NOT_FOUND(HttpStatus.NOT_FOUND, 14100, "모집을 찾을 수 없습니다."),
 
     // etc (99xxx)
     MAX_UPLOAD_SIZE_EXCEEDED_ERROR(HttpStatus.BAD_REQUEST, 99000, "파일 용량이 초과되었습니다."),

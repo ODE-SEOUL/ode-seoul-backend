@@ -8,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "recruit")
@@ -28,10 +27,6 @@ public class Recruit {
     @JoinColumn(name = "host_user_id", nullable = false)
     @ToString.Exclude
     private User host;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruit")
-    @ToString.Exclude
-    private List<RecruitApplication> applications;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id", nullable = false)

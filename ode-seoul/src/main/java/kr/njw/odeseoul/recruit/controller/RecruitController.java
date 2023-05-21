@@ -13,10 +13,7 @@ import jakarta.validation.constraints.Positive;
 import kr.njw.odeseoul.common.dto.BaseResponse;
 import kr.njw.odeseoul.recruit.application.RecruitProvider;
 import kr.njw.odeseoul.recruit.application.RecruitService;
-import kr.njw.odeseoul.recruit.application.dto.CreateRecruitRequest;
-import kr.njw.odeseoul.recruit.application.dto.CreateRecruitResponse;
-import kr.njw.odeseoul.recruit.application.dto.SearchRecruitsRequest;
-import kr.njw.odeseoul.recruit.application.dto.SearchRecruitsResponse;
+import kr.njw.odeseoul.recruit.application.dto.*;
 import kr.njw.odeseoul.recruit.controller.dto.CreateRecruitRestRequest;
 import kr.njw.odeseoul.recruit.entity.Recruit;
 import lombok.RequiredArgsConstructor;
@@ -120,5 +117,20 @@ public class RecruitController {
         request.setScheduledAt(restRequest.getScheduledAt());
 
         return ResponseEntity.ok(new BaseResponse<>(this.recruitService.createRecruit(request)));
+    }
+
+    @Operation(summary = "모집 상세", description = """
+            응답 중 comments 필드는 모집 페이지에 작성된 댓글 목록, applications 필드는 모집에 신청한 사람 목록임""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", description = """
+                    모집을 찾을 수 없습니다. (code: 14100)""", content = @Content())
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<BaseResponse<FindRecruitResponse>> findRecruit(
+            @Parameter(description = "모집 아이디", example = "1") @PathVariable("id") Long id) {
+        FindRecruitRequest request = new FindRecruitRequest();
+        request.setId(id);
+        return ResponseEntity.ok(new BaseResponse<>(this.recruitProvider.findRecruit(request)));
     }
 }

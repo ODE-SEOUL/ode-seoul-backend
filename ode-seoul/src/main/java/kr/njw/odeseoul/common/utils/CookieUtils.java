@@ -3,6 +3,7 @@ package kr.njw.odeseoul.common.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 
 import java.util.Optional;
 
@@ -22,17 +23,26 @@ public class CookieUtils {
     }
 
     public static void addCookie(HttpServletResponse response, String name, String value) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(-1);
-        response.addCookie(cookie);
+        ResponseCookie responseCookie = ResponseCookie.from(name, value)
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(-1)
+                .build();
+
+        response.addHeader("Set-Cookie", responseCookie.toString());
     }
 
     public static void deleteCookie(HttpServletResponse response, String name) {
-        Cookie cookie = new Cookie(name, null);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        ResponseCookie responseCookie = ResponseCookie.from(name, "")
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(0)
+                .build();
+
+        response.addHeader("Set-Cookie", responseCookie.toString());
     }
 }

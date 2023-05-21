@@ -43,7 +43,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200",
                     headers = {
                             @Header(name = "Set-Cookie", description = "리프레시 토큰 (HttpOnly 세션쿠키)",
-                                    schema = @Schema(example = "ode_seoul_refresh_token=Lwj8TE5Lr97EnRRQYbyP1Zu4h4tBht4i; Path=/; HttpOnly")
+                                    schema = @Schema(example = "ode_seoul_refresh_token=Lwj8TE5Lr97EnRRQYbyP1Zu4h4tBht4i; Path=/; Secure; HttpOnly; SameSite=None")
                             )
                     }),
             @ApiResponse(responseCode = "401", description = "로그인에 실패했습니다. (code: 10000)", content = @Content())
@@ -79,7 +79,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200",
                     headers = {
                             @Header(name = "Set-Cookie", description = "리프레시 토큰 (HttpOnly 세션쿠키)",
-                                    schema = @Schema(example = "ode_seoul_refresh_token=Lwj8TE5Lr97EnRRQYbyP1Zu4h4tBht4i; Path=/; HttpOnly")
+                                    schema = @Schema(example = "ode_seoul_refresh_token=Lwj8TE5Lr97EnRRQYbyP1Zu4h4tBht4i; Path=/; Secure; HttpOnly; SameSite=None")
                             )
                     }),
             @ApiResponse(responseCode = "400", description = "지역 정보가 올바르지 않습니다. (code: 10101)", content = @Content()),
@@ -114,7 +114,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200",
                     headers = {
                             @Header(name = "Set-Cookie", description = "리프레시 토큰 (HttpOnly 세션쿠키)",
-                                    schema = @Schema(example = "ode_seoul_refresh_token=Lwj8TE5Lr97EnRRQYbyP1Zu4h4tBht4i; Path=/; HttpOnly")
+                                    schema = @Schema(example = "ode_seoul_refresh_token=Lwj8TE5Lr97EnRRQYbyP1Zu4h4tBht4i; Path=/; Secure; HttpOnly; SameSite=None")
                             )
                     }),
             @ApiResponse(responseCode = "401", description = "리프레시 토큰이 올바르지 않습니다. (code: 10200)", content = @Content())

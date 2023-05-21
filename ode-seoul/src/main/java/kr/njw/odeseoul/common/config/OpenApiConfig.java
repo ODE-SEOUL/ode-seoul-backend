@@ -42,8 +42,10 @@ import org.springframework.context.annotation.Configuration;
                         Swagger에서는 페이지 우상단의 Authorize 버튼을 누르면 토큰을 입력할 수 있습니다.
 
                         엑세스 토큰은 `Authorization: Bearer <accessToken>` 형식의 헤더로 전송합니다.\040\040
-                        리프레시 토큰은 HttpOnly 세션쿠키로 자동 포함되어 프론트에서 별도 처리가 필요 없지만,
-                        만약 수동 지정하고 싶은 경우 `Authorization: Bearer <refreshToken>` 형식의 헤더로 전송합니다. (권장 X)
+                        리프레시 토큰은 세션쿠키로 포함되어, 프론트에서는 AJAX 통신시 withCredentials 옵션을 주는 것 외에 별도 처리가 필요 없습니다.\040\040
+                        만약 리프레시 토큰을 수동 지정하고 싶은 경우 `Authorization: Bearer <refreshToken>` 형식의 헤더로 전송합니다. (권장 X)
+
+                        모든 쿠키에는 `HttpOnly; SameSite=None; Secure` 플래그가 설정되니 각 플래그의 의미를 알아두기 바랍니다.
 
                         [공통 응답 code]\040\040
                         200 : 요청에 성공하였습니다.\040\040

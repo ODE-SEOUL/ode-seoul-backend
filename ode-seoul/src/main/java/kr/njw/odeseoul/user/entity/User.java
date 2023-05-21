@@ -34,6 +34,9 @@ public class User {
     @ToString.Exclude
     private Location location;
 
+    @Column(name = "location_code", length = 45, nullable = false, insertable = false, updatable = false)
+    private String locationCode;
+
     @Column(length = 45, nullable = false)
     private String loginId;
 

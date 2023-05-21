@@ -34,7 +34,7 @@ public class UserProviderImpl implements UserProvider {
         response.setId(user.getId());
         response.setNickname(user.getNickname());
         response.setProfileImage(user.getProfileImage());
-        response.setLocationCode(user.getLocation().getCode());
+        response.setLocationCode(user.getLocationCode());
         response.setSignupStatus(user.getSignupStatus());
         return response;
     }

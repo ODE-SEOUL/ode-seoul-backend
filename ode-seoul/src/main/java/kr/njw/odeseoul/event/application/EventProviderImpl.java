@@ -28,7 +28,7 @@ public class EventProviderImpl implements EventProvider {
     private final LocationRepository locationRepository;
 
     public SearchEventsResponse searchEvents(SearchEventsRequest request) {
-        int maxPagingSize = 100;
+        final int MAX_PAGING_SIZE = 100;
 
         SearchEventsRepoRequest repoRequest = new SearchEventsRepoRequest();
 
@@ -50,7 +50,7 @@ public class EventProviderImpl implements EventProvider {
             repoRequest.setTitleContains(StringUtils.trimToEmpty(request.getTitleContains()));
         }
 
-        repoRequest.setPageable(PageRequest.of(request.getPageNumber() - 1, Math.min(request.getPagingSize(), maxPagingSize)));
+        repoRequest.setPageable(PageRequest.of(request.getPageNumber() - 1, Math.min(request.getPagingSize(), MAX_PAGING_SIZE)));
 
         Page<Event> eventPage = this.eventRepository.search(repoRequest);
 

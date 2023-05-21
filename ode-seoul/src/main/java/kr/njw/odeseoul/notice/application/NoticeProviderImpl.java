@@ -19,10 +19,10 @@ public class NoticeProviderImpl implements NoticeProvider {
     private final NoticeRepository noticeRepository;
 
     public FindNoticesResponse findNotices(int pageNumber, int pagingSize) {
-        int maxPagingSize = 100;
+        final int MAX_PAGING_SIZE = 100;
 
         Page<Notice> noticePage = this.noticeRepository.findAllByDeletedAtIsNullOrderByIdDesc(
-                PageRequest.of(pageNumber - 1, Math.min(pagingSize, maxPagingSize)));
+                PageRequest.of(pageNumber - 1, Math.min(pagingSize, MAX_PAGING_SIZE)));
 
         FindNoticesResponse response = new FindNoticesResponse();
         response.setPage(noticePage.getNumber() + 1);

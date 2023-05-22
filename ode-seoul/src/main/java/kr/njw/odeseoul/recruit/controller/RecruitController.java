@@ -133,4 +133,57 @@ public class RecruitController {
         request.setId(id);
         return ResponseEntity.ok(new BaseResponse<>(this.recruitProvider.findRecruit(request)));
     }
+
+    @SecurityRequirement(name = "accessToken")
+    @Operation(summary = "모집 참여", description = """
+            제약사항: 본인이 모임장이거나 혹은 이미 참여 중인 모집에 또 참여 요청을 할 수 없음.
+            모집 상태가 OPEN이 아니거나 모집 최대인원수가 모두 찬 경우는 참여 요청을 할 수 없음
+
+            참여하면 모집에 남은 자리가 하나 줄어들게 됨""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = """
+                    모집을 찾을 수 없습니다. (code: 14200)
+
+                    잘못된 유저입니다. (code: 14201)
+
+                    본인이 모임장인 모집입니다. (code: 14202)
+
+                    이미 참여 중인 모집입니다. (code: 14203)
+
+                    마감된 모집입니다. (code: 14204)
+
+                    정원이 모두 찬 모집입니다. (code: 14205)""", content = @Content())
+    })
+    @PostMapping("/{id}/applications")
+    public ResponseEntity<BaseResponse<ApplyRecruitResponse>> applyRecruit(
+            Principal principal,
+            @Parameter(description = "모집 아이디", example = "1") @PathVariable("id") Long id) {
+        ApplyRecruitRequest request = new ApplyRecruitRequest();
+        request.setRecruitId(id);
+        request.setMemberUserId(Long.valueOf(principal.getName()));
+        return ResponseEntity.ok(new BaseResponse<>(this.recruitService.applyRecruit(request)));
+    }
+
+    @SecurityRequirement(name = "accessToken")
+    @Operation(summary = "모집 참여 취소", description = """
+            본인이 모집에 참여한 것을 취소할 수 있음 (자기가 모임장인 경우 제외)
+
+            참여를 취소하면 모집에 빈 자리가 하나 생기게 됨
+
+            취소할 내역이 없는 경우에도 별도 오류 메시지 없이 성공이 응답됨 (이미 내역이 없어진 것이므로 성공 처리)""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200")
+    })
+    @DeleteMapping("/{id}/applications/me")
+    public ResponseEntity<BaseResponse<Boolean>> cancelRecruitApplication(
+            Principal principal,
+            @Parameter(description = "모집 아이디", example = "1") @PathVariable("id") Long id) {
+        CancelRecruitApplicationRequest request = new CancelRecruitApplicationRequest();
+        request.setRecruitId(id);
+        request.setMemberUserId(Long.valueOf(principal.getName()));
+
+        this.recruitService.cancelRecruitApplication(request);
+        return ResponseEntity.ok(new BaseResponse<>(true));
+    }
 }

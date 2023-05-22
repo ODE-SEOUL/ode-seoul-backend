@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RecruitApplicationRepository extends JpaRepository<RecruitApplication, Long> {
     @EntityGraph(attributePaths = {"recruit", "member"}, type = EntityGraph.EntityGraphType.LOAD)
@@ -12,4 +13,6 @@ public interface RecruitApplicationRepository extends JpaRepository<RecruitAppli
 
     @EntityGraph(attributePaths = {"recruit", "member"}, type = EntityGraph.EntityGraphType.LOAD)
     List<RecruitApplication> findAllByMemberIdAndDeletedAtIsNullOrderByIdDesc(Long memberId);
+
+    Optional<RecruitApplication> findByRecruitIdAndMemberIdAndDeletedAtIsNull(Long recruitId, Long memberId);
 }

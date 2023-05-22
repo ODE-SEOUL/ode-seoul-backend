@@ -40,4 +40,8 @@ public class RecruitApplication {
 
     @Column
     private LocalDateTime deletedAt;
+
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+    }
 }

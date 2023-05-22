@@ -1,6 +1,8 @@
 package kr.njw.odeseoul.recruit.entity;
 
 import jakarta.persistence.*;
+import kr.njw.odeseoul.common.dto.BaseResponseStatus;
+import kr.njw.odeseoul.common.exception.BaseException;
 import kr.njw.odeseoul.course.entity.Course;
 import kr.njw.odeseoul.user.entity.User;
 import lombok.*;
@@ -87,5 +89,29 @@ public class Recruit {
         OPEN,
         CLOSED,
         DONE
+    }
+
+    public boolean isFull() {
+        return (this.maxPeople != MAX_PEOPLE_INFINITY) && (this.currentPeople >= this.maxPeople);
+    }
+
+    public boolean isMemberEmpty() {
+        return (this.currentPeople <= 1);
+    }
+
+    public void increaseMember() {
+        if (this.isFull()) {
+            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        this.currentPeople++;
+    }
+
+    public void decreaseMember() {
+        if (this.isMemberEmpty()) {
+            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        this.currentPeople--;
     }
 }

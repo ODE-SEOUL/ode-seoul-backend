@@ -4,9 +4,10 @@ import kr.njw.odeseoul.common.dto.BaseResponseStatus;
 import kr.njw.odeseoul.common.exception.BaseException;
 import kr.njw.odeseoul.course.entity.Course;
 import kr.njw.odeseoul.course.repository.CourseRepository;
-import kr.njw.odeseoul.recruit.application.dto.CreateRecruitRequest;
-import kr.njw.odeseoul.recruit.application.dto.CreateRecruitResponse;
+import kr.njw.odeseoul.recruit.application.dto.*;
 import kr.njw.odeseoul.recruit.entity.Recruit;
+import kr.njw.odeseoul.recruit.entity.RecruitApplication;
+import kr.njw.odeseoul.recruit.repository.RecruitApplicationRepository;
 import kr.njw.odeseoul.recruit.repository.RecruitRepository;
 import kr.njw.odeseoul.user.entity.User;
 import kr.njw.odeseoul.user.repository.UserRepository;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RecruitServiceImpl implements RecruitService {
     private final RecruitRepository recruitRepository;
+    private final RecruitApplicationRepository recruitApplicationRepository;
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
 
@@ -53,5 +55,64 @@ public class RecruitServiceImpl implements RecruitService {
         CreateRecruitResponse response = new CreateRecruitResponse();
         response.setId(recruit.getId());
         return response;
+    }
+
+    public ApplyRecruitResponse applyRecruit(ApplyRecruitRequest request) {
+        Recruit recruit = this.recruitRepository.findForUpdateByIdAndDeletedAtIsNull(request.getRecruitId()).orElse(null);
+        User member = this.userRepository.findByIdAndDeletedAtIsNull(request.getMemberUserId()).orElse(null);
+
+        if (recruit == null) {
+            throw new BaseException(BaseResponseStatus.APPLY_RECRUIT_ERROR_NOT_FOUND_RECRUIT);
+        }
+
+        if (member == null) {
+            throw new BaseException(BaseResponseStatus.APPLY_RECRUIT_ERROR_NOT_FOUND_MEMBER);
+        }
+
+        if (recruit.getHost() == member) {
+            throw new BaseException(BaseResponseStatus.APPLY_RECRUIT_ERROR_I_AM_HOST);
+        }
+
+        if (this.recruitApplicationRepository.findByRecruitIdAndMemberIdAndDeletedAtIsNull(recruit.getId(), member.getId()).isPresent()) {
+            throw new BaseException(BaseResponseStatus.APPLY_RECRUIT_ERROR_ALREADY_APPLIED);
+        }
+
+        if (recruit.getProgressStatus() != Recruit.RecruitProgressStatus.OPEN) {
+            throw new BaseException(BaseResponseStatus.APPLY_RECRUIT_ERROR_NOT_OPENED_RECRUIT);
+        }
+
+        if (recruit.isFull()) {
+            throw new BaseException(BaseResponseStatus.APPLY_RECRUIT_ERROR_RECRUIT_FULL);
+        }
+
+        RecruitApplication recruitApplication = RecruitApplication.builder()
+                .recruit(recruit)
+                .member(member)
+                .build();
+
+        this.recruitApplicationRepository.saveAndFlush(recruitApplication);
+        recruit.increaseMember();
+
+        ApplyRecruitResponse response = new ApplyRecruitResponse();
+        response.setId(recruitApplication.getId());
+        return response;
+    }
+
+    public void cancelRecruitApplication(CancelRecruitApplicationRequest request) {
+        Recruit recruit = this.recruitRepository.findForUpdateByIdAndDeletedAtIsNull(request.getRecruitId()).orElse(null);
+        RecruitApplication recruitApplication = this.recruitApplicationRepository.findByRecruitIdAndMemberIdAndDeletedAtIsNull(
+                request.getRecruitId(), request.getMemberUserId()).orElse(null);
+
+        if (recruitApplication == null) {
+            return;
+        }
+
+        recruitApplication.delete();
+
+        if (recruit == null) {
+            return;
+        }
+
+        recruit.decreaseMember();
     }
 }

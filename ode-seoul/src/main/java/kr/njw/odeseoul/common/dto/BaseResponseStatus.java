@@ -39,6 +39,12 @@ public enum BaseResponseStatus {
     CREATE_RECRUIT_ERROR_NOT_FOUND_COURSE(HttpStatus.BAD_REQUEST, 14000, "코스가 존재하지 않습니다."),
     CREATE_RECRUIT_ERROR_NOT_FOUND_HOST(HttpStatus.BAD_REQUEST, 14001, "잘못된 유저입니다."),
     FIND_RECRUIT_ERROR_NOT_FOUND(HttpStatus.NOT_FOUND, 14100, "모집을 찾을 수 없습니다."),
+    APPLY_RECRUIT_ERROR_NOT_FOUND_RECRUIT(HttpStatus.BAD_REQUEST, 14200, "모집을 찾을 수 없습니다."),
+    APPLY_RECRUIT_ERROR_NOT_FOUND_MEMBER(HttpStatus.BAD_REQUEST, 14201, "잘못된 유저입니다."),
+    APPLY_RECRUIT_ERROR_I_AM_HOST(HttpStatus.BAD_REQUEST, 14202, "본인이 모임장인 모집입니다."),
+    APPLY_RECRUIT_ERROR_ALREADY_APPLIED(HttpStatus.BAD_REQUEST, 14203, "이미 참여 중인 모집입니다."),
+    APPLY_RECRUIT_ERROR_NOT_OPENED_RECRUIT(HttpStatus.BAD_REQUEST, 14204, "마감된 모집입니다."),
+    APPLY_RECRUIT_ERROR_RECRUIT_FULL(HttpStatus.BAD_REQUEST, 14205, "정원이 모두 찬 모집입니다."),
 
     // etc (99xxx)
     MAX_UPLOAD_SIZE_EXCEEDED_ERROR(HttpStatus.BAD_REQUEST, 99000, "파일 용량이 초과되었습니다."),

@@ -95,6 +95,7 @@ public class RecruitServiceImpl implements RecruitService {
 
         ApplyRecruitResponse response = new ApplyRecruitResponse();
         response.setId(recruitApplication.getId());
+        response.setCreatedAt(recruitApplication.getCreatedAt());
         return response;
     }
 

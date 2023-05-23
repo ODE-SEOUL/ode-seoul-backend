@@ -56,10 +56,10 @@ management:
     health:
       show-details: always
 
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.orm.jdbc.bind: trace
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
 
 ode-seoul:
   security:

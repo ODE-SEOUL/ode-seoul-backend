@@ -148,7 +148,7 @@ public class RecruitController {
             모집 상태는 현재 날짜나 참가인원수에 관계 없이 모임장이 직접 상태 변경을 했을 때만 변경됨
 
             제약사항: 본인이 모임장이어야 상태를 변경할 수 있음\040\040
-            현재 상태가 OPEN이면 반드시 CLOSED 상태로만 변경할 수 있음\040\040
+            현재 상태가 OPEN이면 반드시 CLOSED 혹은 DONE 상태로만 변경할 수 있음\040\040
             현재 상태가 CLOSED이면 반드시 DONE 상태로만 변경할 수 있음\040\040
             현재 상태가 DONE이면 더 이상 상태를 변경할 수 없음""")
     @ApiResponses({
@@ -156,7 +156,7 @@ public class RecruitController {
             @ApiResponse(responseCode = "400", description = """
                     모집을 찾을 수 없습니다. (code: 14500)
 
-                    모집 마감 상태로만 변경할 수 있습니다. (code: 14502)
+                    모집 마감 혹은 활동 완료 상태로만 변경할 수 있습니다. (code: 14502)
 
                     활동 완료 상태로만 변경할 수 있습니다. (code: 14503)
 

@@ -51,7 +51,7 @@ public enum BaseResponseStatus {
     DELETE_COMMENT_ERROR_NOT_MY_COMMENT(HttpStatus.FORBIDDEN, 14400, "본인의 댓글이 아닙니다."),
     CHANGE_RECRUIT_PROGRESS_ERROR_NOT_FOUND_RECRUIT(HttpStatus.BAD_REQUEST, 14500, "모집을 찾을 수 없습니다."),
     CHANGE_RECRUIT_PROGRESS_ERROR_NOT_HOST(HttpStatus.FORBIDDEN, 14501, "모임장만 변경할 수 있습니다."),
-    CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_CLOSED(HttpStatus.BAD_REQUEST, 14502, "모집 마감 상태로만 변경할 수 있습니다."),
+    CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_CLOSED_OR_DONE(HttpStatus.BAD_REQUEST, 14502, "모집 마감 혹은 활동 완료 상태로만 변경할 수 있습니다."),
     CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_DONE(HttpStatus.BAD_REQUEST, 14503, "활동 완료 상태로만 변경할 수 있습니다."),
     CHANGE_RECRUIT_PROGRESS_ERROR_ALREADY_DONE(HttpStatus.BAD_REQUEST, 14504, "이미 활동 완료된 모집은 상태를 변경할 수 없습니다."),
 

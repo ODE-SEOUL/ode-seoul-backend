@@ -102,8 +102,8 @@ public class Recruit {
     public void changeProgress(RecruitProgressStatus nextProgressStatus) {
         switch (this.progressStatus) {
             case OPEN -> {
-                if (nextProgressStatus != RecruitProgressStatus.CLOSED) {
-                    throw new BaseException(BaseResponseStatus.CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_CLOSED);
+                if (nextProgressStatus != RecruitProgressStatus.CLOSED && nextProgressStatus != RecruitProgressStatus.DONE) {
+                    throw new BaseException(BaseResponseStatus.CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_CLOSED_OR_DONE);
                 }
             }
             case CLOSED -> {

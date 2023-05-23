@@ -312,7 +312,17 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
                   content: {
                     type: 'textarea',
                   },
+                  image: {
+                    isVisible: false,
+                  },
                 },
+                [
+                  await createUploadImageFeature(
+                    componentLoader,
+                    'image',
+                    'Main Image',
+                  ),
+                ],
               ),
               createResource(
                 Recruit,

@@ -26,6 +26,7 @@ public enum BaseResponseStatus {
     EDIT_PICKED_COURSES_ERROR_BAD_USER(HttpStatus.BAD_REQUEST, 11200, "잘못된 유저입니다."),
     EDIT_PICKED_COURSES_ERROR_BAD_COURSE(HttpStatus.BAD_REQUEST, 11201, "잘못된 코스입니다."),
     FIND_PICKED_COURSES_ERROR_BAD_USER(HttpStatus.BAD_REQUEST, 11300, "잘못된 유저입니다."),
+    FIND_USER_STAMPS_ERROR_NOT_FOUND_USER(HttpStatus.NOT_FOUND, 11400, "유저를 찾을 수 없습니다."),
 
     // course (12xxx)
     WRITE_COURSE_REVIEW_ERROR_NOT_FOUND_COURSE(HttpStatus.BAD_REQUEST, 12000, "코스가 존재하지 않습니다."),
@@ -45,6 +46,14 @@ public enum BaseResponseStatus {
     APPLY_RECRUIT_ERROR_ALREADY_APPLIED(HttpStatus.BAD_REQUEST, 14203, "이미 참여 중인 모집입니다."),
     APPLY_RECRUIT_ERROR_NOT_OPENED_RECRUIT(HttpStatus.BAD_REQUEST, 14204, "마감된 모집입니다."),
     APPLY_RECRUIT_ERROR_RECRUIT_FULL(HttpStatus.BAD_REQUEST, 14205, "정원이 모두 찬 모집입니다."),
+    WRITE_COMMENT_ERROR_NOT_FOUND_RECRUIT(HttpStatus.BAD_REQUEST, 14300, "모집을 찾을 수 없습니다."),
+    WRITE_COMMENT_ERROR_NOT_FOUND_USER(HttpStatus.BAD_REQUEST, 14301, "잘못된 유저입니다."),
+    DELETE_COMMENT_ERROR_NOT_MY_COMMENT(HttpStatus.FORBIDDEN, 14400, "본인의 댓글이 아닙니다."),
+    CHANGE_RECRUIT_PROGRESS_ERROR_NOT_FOUND_RECRUIT(HttpStatus.BAD_REQUEST, 14500, "모집을 찾을 수 없습니다."),
+    CHANGE_RECRUIT_PROGRESS_ERROR_NOT_HOST(HttpStatus.FORBIDDEN, 14501, "모임장만 변경할 수 있습니다."),
+    CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_CLOSED(HttpStatus.BAD_REQUEST, 14502, "모집 마감 상태로만 변경할 수 있습니다."),
+    CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_DONE(HttpStatus.BAD_REQUEST, 14503, "활동 완료 상태로만 변경할 수 있습니다."),
+    CHANGE_RECRUIT_PROGRESS_ERROR_ALREADY_DONE(HttpStatus.BAD_REQUEST, 14504, "이미 활동 완료된 모집은 상태를 변경할 수 없습니다."),
 
     // etc (99xxx)
     MAX_UPLOAD_SIZE_EXCEEDED_ERROR(HttpStatus.BAD_REQUEST, 99000, "파일 용량이 초과되었습니다."),

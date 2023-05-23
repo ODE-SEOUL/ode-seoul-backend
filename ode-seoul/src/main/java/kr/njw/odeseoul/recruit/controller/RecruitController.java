@@ -15,6 +15,7 @@ import kr.njw.odeseoul.recruit.application.RecruitProvider;
 import kr.njw.odeseoul.recruit.application.RecruitService;
 import kr.njw.odeseoul.recruit.application.dto.*;
 import kr.njw.odeseoul.recruit.controller.dto.CreateRecruitRestRequest;
+import kr.njw.odeseoul.recruit.controller.dto.WriteCommentRestRequest;
 import kr.njw.odeseoul.recruit.entity.Recruit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +65,7 @@ public class RecruitController {
             @RequestParam(value = "title", required = false)
             String titleContains,
 
-            @Parameter(description = "모집 상태 (1: 모집 중, 0: 모집 중 아님): *다음과 일치*", example = "1")
+            @Parameter(description = "모집 상태 (1: 모집 중 [OPEN], 0: 모집 중 아님 [CLOSED 혹은 DONE]): *다음과 일치*", example = "1")
             @Min(value = 0, message = "must be greater than or equal to 0")
             @Max(value = 1, message = "must be less than or equal to 1")
             @RequestParam(value = "open", required = false)
@@ -167,11 +168,11 @@ public class RecruitController {
 
     @SecurityRequirement(name = "accessToken")
     @Operation(summary = "모집 참여 취소", description = """
-            본인이 모집에 참여한 것을 취소할 수 있음 (자기가 모임장인 경우 제외)
+            본인이 모집에 참여한 것을 취소할 수 있음 (자기가 모임장인 경우는 취소할 수 없음)
 
             참여를 취소하면 모집에 빈 자리가 하나 생기게 됨
 
-            취소할 내역이 없는 경우에도 별도 오류 메시지 없이 성공이 응답됨 (이미 내역이 없어진 것이므로 성공 처리)""")
+            해당 참여 내역이 없는 경우에도 별도 오류 없이 성공이 응답됨 (이미 없는 것이므로 성공 처리)""")
     @ApiResponses({
             @ApiResponse(responseCode = "200")
     })
@@ -184,6 +185,52 @@ public class RecruitController {
         request.setMemberUserId(Long.valueOf(principal.getName()));
 
         this.recruitService.cancelRecruitApplication(request);
+        return ResponseEntity.ok(new BaseResponse<>(true));
+    }
+
+    @SecurityRequirement(name = "accessToken")
+    @Operation(summary = "모집 댓글 작성")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = """
+                    모집을 찾을 수 없습니다. (code: 14300)
+
+                    잘못된 유저입니다. (code: 14301)""", content = @Content())
+    })
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<BaseResponse<WriteCommentResponse>> writeComment(
+            Principal principal,
+            @Parameter(description = "모집 아이디", example = "1") @PathVariable("id") Long id,
+            @Valid @RequestBody WriteCommentRestRequest restRequest) {
+
+        WriteCommentRequest request = new WriteCommentRequest();
+        request.setRecruitId(id);
+        request.setUserId(Long.valueOf(principal.getName()));
+        request.setContent(restRequest.getContent());
+
+        return ResponseEntity.ok(new BaseResponse<>(this.recruitService.writeComment(request)));
+    }
+
+    @SecurityRequirement(name = "accessToken")
+    @Operation(summary = "모집 댓글 삭제", description = """
+            제약사항: 본인의 댓글만 삭제할 수 있음
+
+            해당 댓글이 존재하지 않는 경우에도 별도 오류 없이 성공이 응답됨 (이미 없는 것이므로 성공 처리)""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "403", description = """
+                    본인의 댓글이 아닙니다. (code: 14400)""", content = @Content())
+    })
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<BaseResponse<Boolean>> deleteComment(
+            Principal principal,
+            @Parameter(description = "모집 댓글 아이디", example = "75") @PathVariable("commentId") Long commentId) {
+
+        DeleteCommentRequest request = new DeleteCommentRequest();
+        request.setUserId(Long.valueOf(principal.getName()));
+        request.setRecruitCommentId(commentId);
+
+        this.recruitService.deleteComment(request);
         return ResponseEntity.ok(new BaseResponse<>(true));
     }
 }

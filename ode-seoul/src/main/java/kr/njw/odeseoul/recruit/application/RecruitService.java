@@ -8,4 +8,8 @@ public interface RecruitService {
     ApplyRecruitResponse applyRecruit(ApplyRecruitRequest request);
 
     void cancelRecruitApplication(CancelRecruitApplicationRequest request);
+
+    WriteCommentResponse writeComment(WriteCommentRequest request);
+
+    void deleteComment(DeleteCommentRequest request);
 }

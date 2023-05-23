@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.njw.odeseoul.course.application.dto.FindCourseResponse;
+import kr.njw.odeseoul.course.entity.CourseGugun;
 import kr.njw.odeseoul.course.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.geotools.geometry.jts.JTS;
@@ -63,6 +64,7 @@ public class CourseProviderImpl implements CourseProvider {
             response.setAccessWay(course.getAccessWay());
             response.setRegion(course.getRegion());
             response.setImage(course.getImage());
+            response.setGugunLocationCodes(course.getGuguns().stream().map(CourseGugun::getLocationCode).collect(Collectors.toList()));
 
             if (course.getRoute() != null) {
                 course.getRoute().setSRID(ROUTE_SRID);

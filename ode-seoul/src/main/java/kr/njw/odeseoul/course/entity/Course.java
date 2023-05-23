@@ -2,11 +2,14 @@ package kr.njw.odeseoul.course.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 import org.locationtech.jts.geom.MultiLineString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "course")
@@ -57,6 +60,13 @@ public class Course {
 
     @Column(length = 500, nullable = false)
     private String image;
+
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Where(clause = "deleted_at IS NULL")
+    @OrderBy("locationCode ASC")
+    @ToString.Exclude
+    private List<CourseGugun> guguns;
 
     @Column
     private MultiLineString route;

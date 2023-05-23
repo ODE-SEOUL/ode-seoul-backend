@@ -51,6 +51,9 @@ public class CourseReviewServiceImpl implements CourseReviewService {
 
         WriteCourseReviewResponse response = new WriteCourseReviewResponse();
         response.setId(courseReview.getId());
+        response.setScore(courseReview.getScore());
+        response.setContent(courseReview.getContent());
+        response.setImage(courseReview.getImage());
         response.setCreatedAt(courseReview.getCreatedAt());
         return response;
     }

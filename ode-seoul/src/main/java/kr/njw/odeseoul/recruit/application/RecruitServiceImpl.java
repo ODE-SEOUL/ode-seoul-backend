@@ -62,6 +62,20 @@ public class RecruitServiceImpl implements RecruitService {
         return response;
     }
 
+    public void changeRecruitProgress(ChangeRecruitProgressRequest request) {
+        Recruit recruit = this.recruitRepository.findForUpdateByIdAndDeletedAtIsNull(request.getRecruitId()).orElse(null);
+
+        if (recruit == null) {
+            throw new BaseException(BaseResponseStatus.CHANGE_RECRUIT_PROGRESS_ERROR_NOT_FOUND_RECRUIT);
+        }
+
+        if (!Objects.equals(recruit.getHost().getId(), request.getHostUserId())) {
+            throw new BaseException(BaseResponseStatus.CHANGE_RECRUIT_PROGRESS_ERROR_NOT_HOST);
+        }
+
+        recruit.changeProgress(request.getProgressStatus());
+    }
+
     public ApplyRecruitResponse applyRecruit(ApplyRecruitRequest request) {
         Recruit recruit = this.recruitRepository.findForUpdateByIdAndDeletedAtIsNull(request.getRecruitId()).orElse(null);
         User member = this.userRepository.findByIdAndDeletedAtIsNull(request.getMemberUserId()).orElse(null);

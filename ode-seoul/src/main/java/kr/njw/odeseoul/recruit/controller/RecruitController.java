@@ -14,6 +14,7 @@ import kr.njw.odeseoul.common.dto.BaseResponse;
 import kr.njw.odeseoul.recruit.application.RecruitProvider;
 import kr.njw.odeseoul.recruit.application.RecruitService;
 import kr.njw.odeseoul.recruit.application.dto.*;
+import kr.njw.odeseoul.recruit.controller.dto.ChangeRecruitProgressRestRequest;
 import kr.njw.odeseoul.recruit.controller.dto.CreateRecruitRestRequest;
 import kr.njw.odeseoul.recruit.controller.dto.WriteCommentRestRequest;
 import kr.njw.odeseoul.recruit.entity.Recruit;
@@ -133,6 +134,49 @@ public class RecruitController {
         FindRecruitRequest request = new FindRecruitRequest();
         request.setId(id);
         return ResponseEntity.ok(new BaseResponse<>(this.recruitProvider.findRecruit(request)));
+    }
+
+    @SecurityRequirement(name = "accessToken")
+    @Operation(summary = "모집 상태 변경", description = """
+            모집의 상태에는 OPEN(모집 중), CLOSED(모집 마감), DONE(활동 완료)가 존재함\040\040
+            최초 상태는 OPEN으로 시작함
+
+            모집 상태가 OPEN이면 참여 요청을 받을 수 있음 (최대인원수가 다 차지 않았다면)\040\040
+            모집 상태를 CLOSED로 변경하면 새로운 참여자를 받을 수 없음\040\040
+            모집 상태를 DONE으로 변경하면 모임장과 참여자들에게 해당 생태문화길의 스탬프가 찍힘
+
+            모집 상태는 현재 날짜나 참가인원수에 관계 없이 모임장이 직접 상태 변경을 했을 때만 변경됨
+
+            제약사항: 본인이 모임장이어야 상태를 변경할 수 있음\040\040
+            현재 상태가 OPEN이면 반드시 CLOSED 상태로만 변경할 수 있음\040\040
+            현재 상태가 CLOSED이면 반드시 DONE 상태로만 변경할 수 있음\040\040
+            현재 상태가 DONE이면 더 이상 상태를 변경할 수 없음""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = """
+                    모집을 찾을 수 없습니다. (code: 14500)
+
+                    모집 마감 상태로만 변경할 수 있습니다. (code: 14502)
+
+                    활동 완료 상태로만 변경할 수 있습니다. (code: 14503)
+
+                    이미 활동 완료된 모집은 상태를 변경할 수 없습니다. (code: 14504)""", content = @Content()),
+            @ApiResponse(responseCode = "403", description = """
+                    모임장만 변경할 수 있습니다. (code: 14501)""", content = @Content())
+    })
+    @PatchMapping("/{id}/progress")
+    public ResponseEntity<BaseResponse<Boolean>> changeRecruitProgress(
+            Principal principal,
+            @Parameter(description = "모집 아이디", example = "1") @PathVariable("id") Long id,
+            @Valid @RequestBody ChangeRecruitProgressRestRequest restRequest) {
+
+        ChangeRecruitProgressRequest request = new ChangeRecruitProgressRequest();
+        request.setRecruitId(id);
+        request.setHostUserId(Long.valueOf(principal.getName()));
+        request.setProgressStatus(restRequest.getProgressStatus());
+
+        this.recruitService.changeRecruitProgress(request);
+        return ResponseEntity.ok(new BaseResponse<>(true));
     }
 
     @SecurityRequirement(name = "accessToken")

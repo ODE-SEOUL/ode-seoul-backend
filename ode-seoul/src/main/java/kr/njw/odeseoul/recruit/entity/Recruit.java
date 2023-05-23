@@ -99,6 +99,24 @@ public class Recruit {
         return (this.currentPeople <= 1);
     }
 
+    public void changeProgress(RecruitProgressStatus nextProgressStatus) {
+        switch (this.progressStatus) {
+            case OPEN -> {
+                if (nextProgressStatus != RecruitProgressStatus.CLOSED) {
+                    throw new BaseException(BaseResponseStatus.CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_CLOSED);
+                }
+            }
+            case CLOSED -> {
+                if (nextProgressStatus != RecruitProgressStatus.DONE) {
+                    throw new BaseException(BaseResponseStatus.CHANGE_RECRUIT_PROGRESS_ERROR_ALLOW_DONE);
+                }
+            }
+            case DONE -> throw new BaseException(BaseResponseStatus.CHANGE_RECRUIT_PROGRESS_ERROR_ALREADY_DONE);
+        }
+
+        this.progressStatus = nextProgressStatus;
+    }
+
     public void increaseMember() {
         if (this.isFull()) {
             throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);

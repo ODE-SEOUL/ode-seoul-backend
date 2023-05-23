@@ -19,6 +19,15 @@ import {
   imageKitUploadPathFunction,
 } from './upload/imagekit-upload-provider';
 import { Event } from './entity/event.entity';
+import { Recruit, validateRecruit } from './entity/recruit.entity';
+import {
+  RecruitApplication,
+  validateRecruitApplication,
+} from './entity/recruit-application.entity';
+import {
+  RecruitComment,
+  validateRecruitComment,
+} from './entity/recruit-comment.entity';
 
 const authenticate = async (email: string, password: string) => {
   if (
@@ -164,6 +173,9 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
         UserPickedCourse,
         Course,
         CourseReview,
+        Recruit,
+        RecruitApplication,
+        RecruitComment,
         Location,
         Event,
         Notice,
@@ -289,6 +301,78 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
                 'id',
                 false,
                 validateCourseReview,
+                {
+                  direction: 'desc',
+                  sortBy: 'id',
+                },
+                {
+                  id: {
+                    isTitle: true,
+                  },
+                  content: {
+                    type: 'textarea',
+                  },
+                },
+              ),
+              createResource(
+                Recruit,
+                'id',
+                false,
+                validateRecruit,
+                {
+                  direction: 'desc',
+                  sortBy: 'id',
+                },
+                {
+                  category: {
+                    availableValues: [
+                      { value: 'COM_ANIMAL', label: '반려동물과 함께' },
+                      { value: 'COM_HOUSE', label: '주부들끼리 함께' },
+                      { value: 'COM_OFFICE', label: '직장인들끼리 함께' },
+                      { value: 'COM_NEIGHBOR', label: '이웃주민들과 함께' },
+                      { value: 'COM_EXERCISE', label: '함께 운동해요' },
+                      { value: 'COM_PHOTO', label: '함께 사진찍어요' },
+                      { value: 'COM_EXPER', label: '함께 체험해요' },
+                    ],
+                  },
+                  title: {
+                    isTitle: true,
+                  },
+                  content: {
+                    type: 'textarea',
+                  },
+                  image: {
+                    isVisible: false,
+                  },
+                },
+                [
+                  await createUploadImageFeature(
+                    componentLoader,
+                    'image',
+                    'Main Image',
+                  ),
+                ],
+              ),
+              createResource(
+                RecruitApplication,
+                'id',
+                false,
+                validateRecruitApplication,
+                {
+                  direction: 'desc',
+                  sortBy: 'id',
+                },
+                {
+                  id: {
+                    isTitle: true,
+                  },
+                },
+              ),
+              createResource(
+                RecruitComment,
+                'id',
+                false,
+                validateRecruitComment,
                 {
                   direction: 'desc',
                   sortBy: 'id',

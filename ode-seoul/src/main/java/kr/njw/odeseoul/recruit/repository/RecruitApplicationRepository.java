@@ -1,5 +1,6 @@
 package kr.njw.odeseoul.recruit.repository;
 
+import kr.njw.odeseoul.recruit.entity.Recruit;
 import kr.njw.odeseoul.recruit.entity.RecruitApplication;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,7 @@ public interface RecruitApplicationRepository extends JpaRepository<RecruitAppli
     List<RecruitApplication> findAllByRecruitIdAndDeletedAtIsNullOrderByIdAsc(Long recruitId);
 
     @EntityGraph(attributePaths = {"recruit", "member"}, type = EntityGraph.EntityGraphType.LOAD)
-    List<RecruitApplication> findAllByMemberIdAndDeletedAtIsNullOrderByIdDesc(Long memberId);
+    List<RecruitApplication> findAllByMemberIdAndDeletedAtIsNullAndRecruitProgressStatusAndRecruitDeletedAtIsNull(Long memberId, Recruit.RecruitProgressStatus recruitProgressStatus);
 
     Optional<RecruitApplication> findByRecruitIdAndMemberIdAndDeletedAtIsNull(Long recruitId, Long memberId);
 }

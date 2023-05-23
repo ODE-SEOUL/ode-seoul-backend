@@ -12,10 +12,7 @@ import kr.njw.odeseoul.common.dto.BaseResponseStatus;
 import kr.njw.odeseoul.common.exception.BaseException;
 import kr.njw.odeseoul.user.application.UserProvider;
 import kr.njw.odeseoul.user.application.UserService;
-import kr.njw.odeseoul.user.application.dto.EditPickedCoursesRequest;
-import kr.njw.odeseoul.user.application.dto.EditProfileRequest;
-import kr.njw.odeseoul.user.application.dto.FindPickedCourseResponse;
-import kr.njw.odeseoul.user.application.dto.FindUserResponse;
+import kr.njw.odeseoul.user.application.dto.*;
 import kr.njw.odeseoul.user.controller.dto.EditPickedCoursesRestRequest;
 import kr.njw.odeseoul.user.controller.dto.EditProfileRestRequest;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +36,24 @@ public class UserController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<BaseResponse<FindUserResponse>> findUser(
-            @Parameter(description = "오디서울 아이디", example = "1") @PathVariable("id") Long id
+            @Parameter(description = "오디서울 유저 아이디", example = "1") @PathVariable("id") Long id
     ) {
         return ResponseEntity.ok(new BaseResponse<>(this.userProvider.findUser(id)));
+    }
+
+    @Operation(summary = "유저의 스탬프 목록", description = """
+            자신이 참여 중인 모집의 상태가 DONE(활동 완료)인 경우 해당 생태문화길의 스탬프를 가지게 됨
+
+            스탬프는 생태문화길 별로 하나씩만 가질 수 있음""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", description = "유저를 찾을 수 없습니다. (code: 11400)", content = @Content())
+    })
+    @GetMapping("/{id}/stamps")
+    public ResponseEntity<BaseResponse<List<FindStampResponse>>> findStamps(
+            @Parameter(description = "오디서울 유저 아이디", example = "1") @PathVariable("id") Long id
+    ) {
+        return ResponseEntity.ok(new BaseResponse<>(this.userProvider.findStamps(id)));
     }
 
     @SecurityRequirement(name = "accessToken")
@@ -99,12 +111,8 @@ public class UserController {
         EditPickedCoursesRequest request = new EditPickedCoursesRequest();
 
         switch (restRequest.getType()) {
-            case "add" -> {
-                request.setEditType(EditPickedCoursesRequest.EditType.ADD);
-            }
-            case "remove" -> {
-                request.setEditType(EditPickedCoursesRequest.EditType.REMOVE);
-            }
+            case "add" -> request.setEditType(EditPickedCoursesRequest.EditType.ADD);
+            case "remove" -> request.setEditType(EditPickedCoursesRequest.EditType.REMOVE);
             default -> throw new BaseException(BaseResponseStatus.BAD_REQUEST);
         }
 

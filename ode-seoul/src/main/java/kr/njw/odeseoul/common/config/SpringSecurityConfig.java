@@ -65,6 +65,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/recruits").permitAll()
                 .requestMatchers(HttpMethod.GET, "/recruits/{id}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/users/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/{id}/stamps").permitAll()
                 .anyRequest().hasRole(Role.USER.getValue());
 
         httpSecurity

@@ -20,10 +20,12 @@ import kr.njw.odeseoul.common.dto.BaseResponse;
 import kr.njw.odeseoul.common.security.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")

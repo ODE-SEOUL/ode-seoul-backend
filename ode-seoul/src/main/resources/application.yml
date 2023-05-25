@@ -9,6 +9,8 @@ server:
     max-swallow-size: -1
 
 spring:
+  mvc:
+    log-resolved-exception: false
   datasource:
     url: jdbc:mysql://${ODE_SEOUL_DB_HOSTNAME}:${ODE_SEOUL_DB_PORT}/${ODE_SEOUL_DB_SCHEMA}
     driver-class-name: com.mysql.cj.jdbc.Driver

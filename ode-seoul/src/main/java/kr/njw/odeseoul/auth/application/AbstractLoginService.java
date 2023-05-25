@@ -29,7 +29,7 @@ public abstract class AbstractLoginService<T extends AbstractLoginRequest> imple
         try {
             authenticationResult = this.authenticate(request);
         } catch (Exception e) {
-            log.error("[Login Error]", e);
+            log.error("[{}] message: {}", e.getClass().getName(), e.getMessage());
             throw new BaseException(BaseResponseStatus.LOGIN_ERROR);
         }
 

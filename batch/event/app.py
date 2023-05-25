@@ -29,7 +29,7 @@ def handler(_event, _context):
 
     try:
       events += event_info_response["culturalEventInfo"]["row"]
-    except:
+    except KeyError:
       if event_info_response["RESULT"]["CODE"] == "INFO-200":
         # 해당하는 데이터가 없습니다.
         break

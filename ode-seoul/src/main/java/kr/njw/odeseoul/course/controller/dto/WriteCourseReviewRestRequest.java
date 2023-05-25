@@ -13,7 +13,7 @@ public class WriteCourseReviewRestRequest {
     private Long courseId;
     @Schema(description = "별점", example = "5")
     @NotNull(message = "must not be null")
-    @Min(value = 1, message = "must be greater than or equal to 1")
+    @Min(value = 0, message = "must be greater than or equal to 0")
     @Max(value = 5, message = "must be less than or equal to 5")
     private int score;
     @Schema(example = "걷기에 너무 좋아요! 추천합니다")

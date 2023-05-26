@@ -66,7 +66,7 @@ decorator:
 ode-seoul:
   security:
     jwt-secret: ${ODE_SEOUL_JWT_SECRET}
-    access-token-duration-seconds: 86400
+    access-token-duration-seconds: ${ODE_SEOUL_ACCESS_TOKEN_DURATION_SECONDS}
   kakao:
     client-id: ${ODE_SEOUL_KAKAO_CLIENT_ID}
   image-kit:

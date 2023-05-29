@@ -1,0 +1,20 @@
+CREATE TABLE `recruit` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `host_user_id` int NOT NULL,
+  `course_id` int NOT NULL,
+  `category` varchar(45) NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `content` text NOT NULL,
+  `image` varchar(500) NOT NULL,
+  `current_people` int NOT NULL,
+  `max_people` int NOT NULL COMMENT '0: 제한없음',
+  `scheduled_at` datetime NOT NULL,
+  `progress_status` enum('OPEN','CLOSED','DONE') NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `recruit_host_user_idx` (`host_user_id`),
+  KEY `recruit_course_idx` (`course_id`),
+  KEY `recruit_category_idx` (`category`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

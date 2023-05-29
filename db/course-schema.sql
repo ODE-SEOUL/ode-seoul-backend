@@ -1,0 +1,20 @@
+CREATE TABLE `course` (
+  `id` int NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `level` int NOT NULL COMMENT '1(초급), 2(중급), 3(고급)',
+  `distance` int NOT NULL COMMENT '미터 단위',
+  `time` int NOT NULL COMMENT '분 단위',
+  `description` text NOT NULL,
+  `categories` json NOT NULL DEFAULT (_utf8mb4'[]'),
+  `gugun_summary` varchar(45) NOT NULL,
+  `route_summary` varchar(500) NOT NULL,
+  `near_subway` varchar(45) NOT NULL,
+  `access_way` varchar(500) NOT NULL,
+  `region` enum('NORTH','SOUTH') NOT NULL,
+  `image` varchar(500) NOT NULL,
+  `route` multilinestring DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

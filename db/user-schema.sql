@@ -10,7 +10,8 @@ CREATE TABLE `user` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
+  `saved` tinyint GENERATED ALWAYS AS (if((`deleted_at` is null),1,NULL)) VIRTUAL,
   PRIMARY KEY (`id`),
-  KEY `user_login_id_idx` (`login_id`),
+  UNIQUE KEY `user_login_id_unique` (`login_id`,`saved`),
   KEY `user_refresh_token_idx` (`refresh_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

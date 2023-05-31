@@ -14,6 +14,8 @@ Seoul Eco-Cultural Path Information Community
 
 </div>
 
+![Intro](intro.jpg)
+
 ## 📔 API Documentation
 
 **https://ode-seoul.fly.dev/swagger-ui**

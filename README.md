@@ -10,7 +10,7 @@
 [![Deploy](https://img.shields.io/github/actions/workflow/status/ODE-SEOUL/ode-seoul-backend/deploy.yml?branch=master&label=deploy)](https://github.com/ODE-SEOUL/ode-seoul-backend/actions/workflows/deploy.yml)
 [![Uptime](https://uptime.betterstack.com/status-badges/v1/monitor/q289.svg)](https://ode-seoul.betteruptime.com)
 
-Seoul Eco-Cultural Path Information Community
+Seoul Eco-Cultural Path Exploration Community
 
 </div>
 

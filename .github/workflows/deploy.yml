@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - ode-seoul/**
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -36,7 +37,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=build-main
       - uses: superfly/flyctl-actions/setup-flyctl@master
         with:
-          version: 0.0.559
+          version: 0.2.28
       - run: flyctl deploy
         working-directory: ode-seoul
         env:

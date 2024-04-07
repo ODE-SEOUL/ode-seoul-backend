@@ -11,7 +11,7 @@ auto_stop_machines = false
 auto_start_machines = false
 
 [env]
-JAVA_OPTS = "-Xms732m -Xmx732m"
+JAVA_OPTS = "-Xms512m -Xmx512m"
 TZ = "Asia/Seoul"
 
 [checks]

@@ -181,9 +181,6 @@ const createUploadImageFeature = async (componentLoader, key, name) => {
         Notice,
       ],
       synchronize: false,
-      ssl: {
-        rejectUnauthorized: true,
-      },
       namingStrategy: new SnakeNamingStrategy(),
       legacySpatialSupport: false,
     }),

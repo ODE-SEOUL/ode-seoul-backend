@@ -13,7 +13,7 @@ def handler(_event, _context):
   load_dotenv()
   db = pymysql.connect(host=os.environ["ODE_SEOUL_DB_HOSTNAME"], port=int(os.environ["ODE_SEOUL_DB_PORT"]),
                        user=os.environ["ODE_SEOUL_DB_USERNAME"], passwd=os.environ["ODE_SEOUL_DB_PASSWORD"],
-                       db=os.environ["ODE_SEOUL_DB_SCHEMA"], charset="utf8mb4", ssl={"rejectUnauthorized": True})
+                       db=os.environ["ODE_SEOUL_DB_SCHEMA"], charset="utf8mb4")
 
   page_start = 1
   paging_size = 1000
